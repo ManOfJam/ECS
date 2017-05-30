@@ -36,7 +36,8 @@ module.exports = extend;
 
 },{}],2:[function(require,module,exports){
 class Component {
-	constructor() {
+	constructor(name) {
+		this.name = name;
 	}
 }
 
@@ -51,29 +52,49 @@ module.exports = components;
 
 },{"./transform.js":4}],4:[function(require,module,exports){
 const Component = require("../component.js");
+const Vector = require("../geometry/vector.js");
 
 class Transform extends Component {
 	constructor() {
-		super();
+		super("transform");
+
+		this.position = new Vector();
+		this.angle = 0;
+	}
+
+	translate(x, y) {
+		this.position = this.position.add(new Vector(x, y));
+	}
+
+	rotate(deg) {
+		this.angle = (this.angle + deg) % 360;
 	}
 }
 
 module.exports = Transform;
 
-},{"../component.js":2}],5:[function(require,module,exports){
+},{"../component.js":2,"../geometry/vector.js":8}],5:[function(require,module,exports){
 const EventObject = require("./eventObject.js");
+const Component = require("./component.js");
 
 class Entity extends EventObject {
-	constructor() {
+	constructor(...components) {
 		super();
 
 		this.id = "#" + Math.random().toString(16).substring(2, 10);
+		this.addComponent.apply(this, components);
+	}
+
+	addComponent(...components) {
+		components.forEach(c => {
+			if(c instanceof Component) this[c.name] = c;
+		});
 	}
 }
 
 module.exports = Entity;
 
-},{"./eventObject.js":6}],6:[function(require,module,exports){
+},{"./component.js":2,"./eventObject.js":6}],6:[function(require,module,exports){
 class EventObject {
 	constructor() {
 		this.events = {};
@@ -98,21 +119,50 @@ class EventObject {
 module.exports = EventObject;
 
 },{}],7:[function(require,module,exports){
-const System = require("./system.js");
+const geometry = {
+	Vector: require("./vector.js")
+};
+
+module.exports = geometry;
+
+},{"./vector.js":8}],8:[function(require,module,exports){
+class Vector {
+	constructor(x, y) {
+
+		if(typeof x === "object") {
+			if(Array.isArray(x)) {
+				y = x[1];
+				x = x[0];
+				
+			}
+			else if(x) {
+				y = x["y"];
+				x = x["x"];
+			}
+		}
+
+		this.x = (parseInt(x) || 0);
+		this.y = (parseInt(y) || 0);
+	}
+
+	add(x, y) {
+		const addend = new Vector(x, y);
+		return new Vector(this.x + addend.x, this.y + addend.y);
+	}
+}
+
+module.exports = Vector;
+
+},{}],9:[function(require,module,exports){
 const Entity = require("./entity.js");
 const EventObject = require("./eventObject.js")
 
 class Scene extends EventObject {
-	constructor(...systems) {
+	constructor(name) {
 		super();
 		
-		this.systems = [];
+		this.name = name;
 		this.entities = {};
-		this.addSystem.apply(this, systems);
-	}
-
-	addSystem(...systems) {
-		this.systems = this.systems.concat(systems.filter(system => system instanceof System));
 	}
 
 	addEntity(...entities) {
@@ -124,14 +174,20 @@ class Scene extends EventObject {
 
 module.exports = Scene;
 
-},{"./entity.js":5,"./eventObject.js":6,"./system.js":9}],8:[function(require,module,exports){
+},{"./entity.js":5,"./eventObject.js":6}],10:[function(require,module,exports){
+const EventObject = require("./eventObject.js");
+const System = require("./system.js");
 const Scene = require("./scene.js");
 
-class Stage extends Scene {
+class Stage extends EventObject {
 	constructor(...systems) {
 		super();
 
-		this.scenes = [];
+		this.systems = [];
+		this.addSystem.apply(this, systems);
+		this.scenes = {};
+		this.addScene(new Scene("main"));
+		this.currentName = "main";
 		this.ticker = {
 			interval: 1000,
 			running: false,
@@ -165,22 +221,44 @@ class Stage extends Scene {
 				this.running = false;
 			},
 
-			tick: (delta) => {
-				this.systems.forEach(system => system.update(delta));
-			}
+			tick: (delta) => this.update(delta)
 		};
+	}
 
-		this.addSystem.apply(this, systems);
+	get currentScene() {
+		return this.scenes[this.currentName];
+	}
+
+	addSystem(...systems) {
+		this.systems = this.systems.concat(systems.filter(system => system instanceof System));
+	}
+
+	addEntity(...entities) {
+		this.currentScene.addEntity.apply(this.currentScene, entities);
+	}
+
+	addScene(...scenes) {
+		scenes.forEach(s => {
+			if(s instanceof Scene) this.scenes[s.name] = s;
+		});
+	}
+
+	update(delta) {
+		this.systems.forEach(system => system.update(delta));
 	}
 
 	start() {
 		this.ticker.start();
 	}
+
+	stop() {
+		this.ticker.stop();
+	}
 }
 
 module.exports = Stage;
 
-},{"./scene.js":7}],9:[function(require,module,exports){
+},{"./eventObject.js":6,"./scene.js":9,"./system.js":11}],11:[function(require,module,exports){
 class System {
 	constructor() {
 	}
@@ -191,14 +269,14 @@ class System {
 
 module.exports = System;
 
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 const systems = {
 	Render: require("./render.js")
 };
 
 module.exports = systems;
 
-},{"./render.js":11}],11:[function(require,module,exports){
+},{"./render.js":13}],13:[function(require,module,exports){
 const extend = require("../common/extend.js");
 const System = require("../system.js");
 
@@ -226,14 +304,15 @@ class Render extends System {
 
 module.exports = Render;
 
-},{"../common/extend.js":1,"../system.js":9}],12:[function(require,module,exports){
+},{"../common/extend.js":1,"../system.js":11}],14:[function(require,module,exports){
 window.engine = {
 	Entity: require("./entity.js"),
 	Scene: require("./scene.js"),
 	Stage: require("./stage.js"),
 	System: require("./system.js"),
 	components: require("./components"),
+	geometry: require("./geometry"),
 	systems: require("./systems")
 };
 
-},{"./components":3,"./entity.js":5,"./scene.js":7,"./stage.js":8,"./system.js":9,"./systems":10}]},{},[12]);
+},{"./components":3,"./entity.js":5,"./geometry":7,"./scene.js":9,"./stage.js":10,"./system.js":11,"./systems":12}]},{},[14]);

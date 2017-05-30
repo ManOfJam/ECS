@@ -9,15 +9,36 @@
 		<canvas id="canvas" style="border: 1px solid #000; display: block; margin: 72px auto 0;"></canvas>
 		<script src="build/build.js"></script>
 		<script>
-			const main = new engine.Stage(
+
+			//Create a new Stage, a container for all instance data.
+			//Pass instances of the systems you wish to use, in order of operation.
+
+			const demo = new engine.Stage(
 				new engine.systems.Render("canvas", {width: 800, height: 600})
 			);
 
-			const entity = new engine.Entity();
-			
-			main.addEntity(entity);
 
-			main.start();
+			//Create a new entity.
+			//Pass instances of the components you wish the entity to have.
+
+			const entity = new engine.Entity(
+				new engine.components.Transform()
+			);
+
+
+			//The components are added as an object property of the component name.
+
+			entity.transform.translate(10, 10);
+
+
+			//Add the entity to the stage.
+
+			demo.addEntity(entity);
+
+
+			//...or create a scene, a container for a subset of entities
+
+			console.log(JSON.stringify(demo, null, "\t"));
 		</script>
 	</body>
 </html>

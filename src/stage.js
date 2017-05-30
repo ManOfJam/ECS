@@ -1,10 +1,16 @@
+const EventObject = require("./eventObject.js");
+const System = require("./system.js");
 const Scene = require("./scene.js");
 
-class Stage extends Scene {
+class Stage extends EventObject {
 	constructor(...systems) {
 		super();
 
-		this.scenes = [];
+		this.systems = [];
+		this.addSystem.apply(this, systems);
+		this.scenes = {};
+		this.addScene(new Scene("main"));
+		this.currentName = "main";
 		this.ticker = {
 			interval: 1000,
 			running: false,
@@ -38,16 +44,38 @@ class Stage extends Scene {
 				this.running = false;
 			},
 
-			tick: (delta) => {
-				this.systems.forEach(system => system.update(delta));
-			}
+			tick: (delta) => this.update(delta)
 		};
+	}
 
-		this.addSystem.apply(this, systems);
+	get currentScene() {
+		return this.scenes[this.currentName];
+	}
+
+	addSystem(...systems) {
+		this.systems = this.systems.concat(systems.filter(system => system instanceof System));
+	}
+
+	addEntity(...entities) {
+		this.currentScene.addEntity.apply(this.currentScene, entities);
+	}
+
+	addScene(...scenes) {
+		scenes.forEach(s => {
+			if(s instanceof Scene) this.scenes[s.name] = s;
+		});
+	}
+
+	update(delta) {
+		this.systems.forEach(system => system.update(delta));
 	}
 
 	start() {
 		this.ticker.start();
+	}
+
+	stop() {
+		this.ticker.stop();
 	}
 }
 
