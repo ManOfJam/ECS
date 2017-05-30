@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en-gb">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Env Test</title>
+	</head>
+	<body>
+		<canvas id="canvas" style="border: 1px solid #000; display: block; margin: 72px auto 0;"></canvas>
+		<script src="build/build.js"></script>
+		<script>
+			const main = new engine.Stage(
+				new engine.systems.Render("canvas", {width: 800, height: 600})
+			);
+
+			const entity = new engine.Entity();
+			
+			main.addEntity(entity);
+
+			main.start();
+		</script>
+	</body>
+</html>

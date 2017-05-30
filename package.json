@@ -1,0 +1,19 @@
+{
+  "name": "ecs",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "./node_modules/.bin/gulp dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^14.4.0",
+    "gulp": "^3.9.1",
+    "gulp-webserver": "^0.9.1",
+    "run-sequence": "^1.2.2",
+    "watchify": "^3.9.0"
+  }
+}
