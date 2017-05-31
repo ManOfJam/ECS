@@ -22,7 +22,10 @@
 
 			demo.addEntity(
 				new engine.Entity(
-					new engine.components.Transform()
+					new engine.components.Transform(),
+					new engine.components.Body(
+						new engine.geometry.Shape()
+					)
 				)
 			);
 

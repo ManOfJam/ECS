@@ -19,7 +19,7 @@ class Transform extends Component {
 		}
 
 		this.position = new Vector(x, y);
-		this.angle = deg % 360;
+		this.angle = (parseInt(deg) || 0) % 360;
 	}
 
 	translate(x, y) {

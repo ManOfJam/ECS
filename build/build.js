@@ -44,13 +44,31 @@ class Component {
 module.exports = Component;
 
 },{}],3:[function(require,module,exports){
+const Component = require("../component.js");
+const Shape = require("../geometry/shape.js");
+
+class Body extends Component {
+	constructor(shape) {
+		super("body");
+
+		if(!(shape instanceof Shape))
+			return;
+
+		this.shape = shape;
+	}
+}
+
+module.exports = Body;
+
+},{"../component.js":2,"../geometry/shape.js":9}],4:[function(require,module,exports){
 const components = {
+	Body: require("./body.js"),
 	Transform: require("./transform.js")
 };
 
 module.exports = components;
 
-},{"./transform.js":4}],4:[function(require,module,exports){
+},{"./body.js":3,"./transform.js":5}],5:[function(require,module,exports){
 const Component = require("../component.js");
 const Vector = require("../geometry/vector.js");
 
@@ -72,7 +90,7 @@ class Transform extends Component {
 		}
 
 		this.position = new Vector(x, y);
-		this.angle = deg % 360;
+		this.angle = (parseInt(deg) || 0) % 360;
 	}
 
 	translate(x, y) {
@@ -86,7 +104,7 @@ class Transform extends Component {
 
 module.exports = Transform;
 
-},{"../component.js":2,"../geometry/vector.js":8}],5:[function(require,module,exports){
+},{"../component.js":2,"../geometry/vector.js":10}],6:[function(require,module,exports){
 const EventObject = require("./eventObject.js");
 const Component = require("./component.js");
 
@@ -107,7 +125,7 @@ class Entity extends EventObject {
 
 module.exports = Entity;
 
-},{"./component.js":2,"./eventObject.js":6}],6:[function(require,module,exports){
+},{"./component.js":2,"./eventObject.js":7}],7:[function(require,module,exports){
 class EventObject {
 	constructor() {
 		this.events = {};
@@ -131,14 +149,23 @@ class EventObject {
 
 module.exports = EventObject;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 const geometry = {
+	Shape: require("./shape.js"),
 	Vector: require("./vector.js")
 };
 
 module.exports = geometry;
 
-},{"./vector.js":8}],8:[function(require,module,exports){
+},{"./shape.js":9,"./vector.js":10}],9:[function(require,module,exports){
+class Shape {
+	constructor() {
+	}
+}
+
+module.exports = Shape;
+
+},{}],10:[function(require,module,exports){
 class Vector {
 	constructor(x, y) {
 
@@ -166,7 +193,7 @@ class Vector {
 
 module.exports = Vector;
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 const Entity = require("./entity.js");
 const EventObject = require("./eventObject.js")
 
@@ -187,7 +214,7 @@ class Scene extends EventObject {
 
 module.exports = Scene;
 
-},{"./entity.js":5,"./eventObject.js":6}],10:[function(require,module,exports){
+},{"./entity.js":6,"./eventObject.js":7}],12:[function(require,module,exports){
 const EventObject = require("./eventObject.js");
 const System = require("./system.js");
 const Scene = require("./scene.js");
@@ -275,7 +302,7 @@ class Stage extends EventObject {
 
 module.exports = Stage;
 
-},{"./eventObject.js":6,"./scene.js":9,"./system.js":11}],11:[function(require,module,exports){
+},{"./eventObject.js":7,"./scene.js":11,"./system.js":13}],13:[function(require,module,exports){
 const Entity = require("./entity.js");
 
 class System {
@@ -290,20 +317,20 @@ class System {
 
 module.exports = System;
 
-},{"./entity.js":5}],12:[function(require,module,exports){
+},{"./entity.js":6}],14:[function(require,module,exports){
 const systems = {
 	Render: require("./render.js")
 };
 
 module.exports = systems;
 
-},{"./render.js":13}],13:[function(require,module,exports){
+},{"./render.js":15}],15:[function(require,module,exports){
 const extend = require("../common/extend.js");
 const System = require("../system.js");
 
 class Render extends System {
 	constructor(canvas, options) {
-		super("transform");
+		super("transform", "body");
 
 		if(typeof canvas === "string")
 			canvas = document.getElementById(canvas);
@@ -332,7 +359,7 @@ class Render extends System {
 
 module.exports = Render;
 
-},{"../common/extend.js":1,"../system.js":11}],14:[function(require,module,exports){
+},{"../common/extend.js":1,"../system.js":13}],16:[function(require,module,exports){
 window.engine = {
 	Entity: require("./entity.js"),
 	Scene: require("./scene.js"),
@@ -343,4 +370,4 @@ window.engine = {
 	systems: require("./systems")
 };
 
-},{"./components":3,"./entity.js":5,"./geometry":7,"./scene.js":9,"./stage.js":10,"./system.js":11,"./systems":12}]},{},[14]);
+},{"./components":4,"./entity.js":6,"./geometry":8,"./scene.js":11,"./stage.js":12,"./system.js":13,"./systems":14}]},{},[16]);
