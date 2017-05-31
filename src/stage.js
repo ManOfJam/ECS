@@ -67,7 +67,11 @@ class Stage extends EventObject {
 	}
 
 	update(delta) {
-		this.systems.forEach(system => system.update(delta));
+		this.systems.forEach(system => {
+			if(typeof system.update === "function") {
+				system.update(this.currentScene.entities, delta);
+			}
+		});
 	}
 
 	start() {

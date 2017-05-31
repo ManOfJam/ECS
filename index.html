@@ -17,28 +17,20 @@
 				new engine.systems.Render("canvas", {width: 800, height: 600})
 			);
 
-
-			//Create a new entity.
+			//Begin adding entities imedietly.
 			//Pass instances of the components you wish the entity to have.
 
-			const entity = new engine.Entity(
-				new engine.components.Transform()
+			demo.addEntity(
+				new engine.Entity(
+					new engine.components.Transform()
+				)
 			);
 
+			demo.start();
 
-			//The components are added as an object property of the component name.
-
-			entity.transform.translate(10, 10);
-
-
-			//Add the entity to the stage.
-
-			demo.addEntity(entity);
-
-
-			//...or create a scene, a container for a subset of entities
-
-			console.log(JSON.stringify(demo, null, "\t"));
+			//Added system requirements
+			//Added system .getEntities()
+			
 		</script>
 	</body>
 </html>

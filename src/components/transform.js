@@ -2,11 +2,24 @@ const Component = require("../component.js");
 const Vector = require("../geometry/vector.js");
 
 class Transform extends Component {
-	constructor() {
+	constructor(x, y, deg) {
 		super("transform");
 
-		this.position = new Vector();
-		this.angle = 0;
+		if(typeof x === "object") {
+			if(Array.isArray(x)) {
+				deg = y;
+				y = x[0];
+				x = x[1];
+			}
+			else if(x) {
+				deg = y;
+				y = x.y;
+				x = x.x;
+			}
+		}
+
+		this.position = new Vector(x, y);
+		this.angle = deg % 360;
 	}
 
 	translate(x, y) {

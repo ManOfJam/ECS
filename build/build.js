@@ -55,11 +55,24 @@ const Component = require("../component.js");
 const Vector = require("../geometry/vector.js");
 
 class Transform extends Component {
-	constructor() {
+	constructor(x, y, deg) {
 		super("transform");
 
-		this.position = new Vector();
-		this.angle = 0;
+		if(typeof x === "object") {
+			if(Array.isArray(x)) {
+				deg = y;
+				y = x[0];
+				x = x[1];
+			}
+			else if(x) {
+				deg = y;
+				y = x.y;
+				x = x.x;
+			}
+		}
+
+		this.position = new Vector(x, y);
+		this.angle = deg % 360;
 	}
 
 	translate(x, y) {
@@ -244,7 +257,11 @@ class Stage extends EventObject {
 	}
 
 	update(delta) {
-		this.systems.forEach(system => system.update(delta));
+		this.systems.forEach(system => {
+			if(typeof system.update === "function") {
+				system.update(this.currentScene.entities, delta);
+			}
+		});
 	}
 
 	start() {
@@ -259,17 +276,21 @@ class Stage extends EventObject {
 module.exports = Stage;
 
 },{"./eventObject.js":6,"./scene.js":9,"./system.js":11}],11:[function(require,module,exports){
+const Entity = require("./entity.js");
+
 class System {
-	constructor() {
+	constructor(...required) {
+		this.required = required.filter(r => typeof r === "string");
 	}
 
-	update(delta) {
+	getEntities(...entities) {
+		return entities.filter(e => e instanceof Entity && this.required.every(r => r in e));
 	}
 }
 
 module.exports = System;
 
-},{}],12:[function(require,module,exports){
+},{"./entity.js":5}],12:[function(require,module,exports){
 const systems = {
 	Render: require("./render.js")
 };
@@ -282,7 +303,7 @@ const System = require("../system.js");
 
 class Render extends System {
 	constructor(canvas, options) {
-		super();
+		super("transform");
 
 		if(typeof canvas === "string")
 			canvas = document.getElementById(canvas);
@@ -299,6 +320,13 @@ class Render extends System {
 
 		canvas.setAttribute("width", settings.width);
 		canvas.setAttribute("height", settings.height);
+
+		this.canvas = canvas;
+		this.context = canvas.getContext("2d");
+	}
+
+	update(entityPool, delta) {
+		const entities = this.getEntities(entityPool);
 	}
 }
 
