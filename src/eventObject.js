@@ -32,7 +32,7 @@ class EventObject {
 					const callbackIndex = eventsList.findIndex(curCallback => curCallback === callback || curCallback.name === callback);
 
 					if(callbackIndex !== -1) {
-						this.events[e].splice(callbackIndex,);
+						this.events[e].splice(callbackIndex, 1);
 						if(!this.events[e].length) delete this.events[e][event];
 					}
 				}

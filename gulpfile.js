@@ -5,25 +5,29 @@ const sequence = require("run-sequence");
 const browserify = require("browserify");
 const watchify = require("watchify");
 
+const b = browserify({
+	entries: "src",
+	cache: {},
+	packageCache: {},
+	plugin: [watchify]
+});
+
+const build = function() {
+	if(!fs.existsSync("build"))
+		fs.mkdirSync("build");
+
+	b.bundle().pipe(fs.createWriteStream("build/build.js"));
+};
+
+gulp.task("build", build);
+
 gulp.task("watch", function() {
-	const b = browserify({
-		entries: "src",
-		cache: {},
-		packageCache: {},
-		plugin: [watchify]
-	});
-
-	const build = function() {
-		b.bundle().pipe(fs.createWriteStream("build/build.js"));
-	};
-
 	b.on("update", build);
 	build();
 });
 
 gulp.task("host", function() {
-	gulp.src("./")
-		.pipe(webserver());
+	gulp.src("./").pipe(webserver());
 });
 
 gulp.task("dev", function() {
