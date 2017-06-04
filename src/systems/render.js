@@ -3,7 +3,7 @@ const System = require("../system.js");
 
 class Render extends System {
 	constructor(canvas, options) {
-		super("transform", "body");
+		super("transform", "size");
 
 		if(typeof canvas === "string")
 			canvas = document.getElementById(canvas);

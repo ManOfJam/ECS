@@ -1,5 +1,4 @@
 const geometry = {
-	Shape: require("./shape.js"),
 	Vector: require("./vector.js")
 };
 
