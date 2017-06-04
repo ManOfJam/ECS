@@ -1,5 +1,5 @@
 const components = {
-	Body: require("./body.js"),
+	Size: require("./size.js"),
 	Transform: require("./transform.js")
 };
 

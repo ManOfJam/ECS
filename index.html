@@ -20,16 +20,11 @@
 			//Begin adding entities imedietly.
 			//Pass instances of the components you wish the entity to have.
 
-			demo.addEntity(
-				new engine.Entity(
-					new engine.components.Transform(),
-					new engine.components.Body(
-						new engine.geometry.Shape()
-					)
-				)
-			);
+			const e = new engine.Entity("transform", "size");
 
-			demo.start();
+			console.log(e);
+
+			//demo.start();
 
 			//Added system requirements
 			//Added system .getEntities()

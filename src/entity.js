@@ -1,5 +1,6 @@
 const EventObject = require("./eventObject.js");
 const Component = require("./component.js");
+const componentsLib = require("./components");
 
 class Entity extends EventObject {
 	constructor(...components) {
@@ -10,9 +11,19 @@ class Entity extends EventObject {
 	}
 
 	addComponent(...components) {
-		components.forEach(c => {
-			if(c instanceof Component) this[c.name] = c;
-		});
+		for(let component of components) {
+			if(typeof component === "string") {
+				const compConstructor = componentsLib[component.substring(0, 1).toUpperCase() + component.substring(1)];
+
+				if(typeof compConstructor === "function") {
+					component = new compConstructor;
+				}
+			}
+
+			if(component instanceof Component) {
+				this[component.name] = component;
+			}
+		}
 	}
 }
 
