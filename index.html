@@ -9,26 +9,19 @@
 		<canvas id="canvas" style="border: 1px solid #000; display: block; margin: 72px auto 0;"></canvas>
 		<script src="build/build.js"></script>
 		<script>
-
-			//Create a new Stage, a container for all instance data.
-			//Pass instances of the systems you wish to use, in order of operation.
-
 			const demo = new engine.Stage(
 				new engine.systems.Render("canvas", {width: 800, height: 600})
 			);
 
-			//Begin adding entities imedietly.
-			//Pass instances of the components you wish the entity to have.
+			demo.addEntity(
+				new engine.Entity("transform", "size", "motion")
+					.set({
+						transform: {position: {x: 10, y: 10}},
+						size: {x: 32, y: 32},
+					})
+			);
 
-			const e = new engine.Entity("transform", "size");
-
-			console.log(e);
-
-			//demo.start();
-
-			//Added system requirements
-			//Added system .getEntities()
-			
+			demo.start();
 		</script>
 	</body>
 </html>

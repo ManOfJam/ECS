@@ -1,6 +1,7 @@
 const EventObject = require("./eventObject.js");
 const Component = require("./component.js");
 const componentsLib = require("./components");
+const extend = require("./common/extend.js");
 
 class Entity extends EventObject {
 	constructor(...components) {
@@ -24,6 +25,14 @@ class Entity extends EventObject {
 				this[component.name] = component;
 			}
 		}
+
+		return this;
+	}
+
+	set(data) {
+		extend(this, data);
+
+		return this;
 	}
 }
 

@@ -26,7 +26,16 @@ class Render extends System {
 	}
 
 	update(entityPool, delta) {
-		const entities = this.getEntities(entityPool);
+		const entities = this.getEntities.apply(this, entityPool);
+
+		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+		this.context.beginPath();
+
+		for(const entity of entities) {
+			this.context.rect(entity.transform.position.x, entity.transform.position.y, entity.size.x, entity.size.y);
+		}
+
+		this.context.stroke();
 	}
 }
 
