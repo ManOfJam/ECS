@@ -11,7 +11,7 @@ class Spatial extends Component {
 		this.height = height;
 	}
 
-	collidesWith(space) {
+	overlaps(space) {
 		if(space instanceof Entity) {
 			space = space.getComponent("spatial");
 		}
@@ -25,6 +25,23 @@ class Spatial extends Component {
 			this.x > space.x + space.width &&
 			this.y + this.height < space.y &&
 			this.y > space.y + space.height
+		);
+	}
+
+	inside(space) {
+		if(space instanceof Entity) {
+			space = space.getComponent("spatial");
+		}
+
+		if(!(space instanceof Spatial)) {
+			return null;
+		}
+
+		return (
+			this.x >= space.x &&
+			this.x + this.width <= space.x + space.width &&
+			this.y >= space.y &&
+			this.y + this.height <= space.y + space.height
 		);
 	}
 }
