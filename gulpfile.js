@@ -6,6 +6,7 @@ const browserify = require("browserify");
 const watchify = require("watchify");
 
 const b = browserify({
+	debug: true,
 	entries: "src",
 	cache: {},
 	packageCache: {},

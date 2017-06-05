@@ -1,10 +1,23 @@
 const EventObject = require("./eventObject.js");
 const System = require("./system.js");
 const Scene = require("./scene.js");
+const extend = require("./common/extend.js");
 
 class Stage extends EventObject {
-	constructor(...systems) {
+	constructor(options, ...systems) {
 		super();
+
+		if(options instanceof System) {
+			systems.unshift(options);
+			options = {};
+		}
+
+		const settings = {
+			width: 720,
+			height: 720
+		};
+
+		extend(this, settings, options);
 
 		this.systems = [];
 		this.addSystem.apply(this, systems);
@@ -12,7 +25,7 @@ class Stage extends EventObject {
 		this.addScene(new Scene("main"));
 		this.currentName = "main";
 		this.ticker = {
-			interval: 1000,
+			interval: 10,
 			running: false,
 			frameId: null,
 

@@ -8,6 +8,8 @@ class EventObject {
 			return;
 
 		(this.events.get(event) || this.events.set(event, new Set).get(event)).add(callback);
+
+		return this;
 	}
 
 	off(event, callback) {
@@ -23,12 +25,16 @@ class EventObject {
 				this.events.get(event).delete(callback);
 			}
 		}
+
+		return this;
 	}
 
 	trigger(event, ...args) {
 		if(this.events.has(event)) {
 			this.events.get(event).forEach(e => e.apply(this, args));
 		}
+
+		return this;
 	}
 }
 

@@ -16,7 +16,7 @@ class Render extends System {
 			height: 720
 		};
 
-		extend(settings, options);
+		extend(this, settings, options);
 
 		canvas.setAttribute("width", settings.width);
 		canvas.setAttribute("height", settings.height);
@@ -28,11 +28,12 @@ class Render extends System {
 	update(entityPool, delta) {
 		const entities = this.getEntities.apply(this, entityPool);
 
-		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+		this.context.clearRect(0, 0, this.width, this.height);
 		this.context.beginPath();
 
 		for(const entity of entities) {
 			this.context.rect(entity.transform.position.x, entity.transform.position.y, entity.size.x, entity.size.y);
+			entity.trigger("update");
 		}
 
 		this.context.stroke();

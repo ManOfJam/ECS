@@ -10,7 +10,8 @@
 		<script src="build/build.js"></script>
 		<script>
 			const demo = new engine.Stage(
-				new engine.systems.Render("canvas", {width: 800, height: 600})
+				new engine.systems.Motion(),
+				new engine.systems.Render("canvas")
 			);
 
 			demo.addEntity(
@@ -18,6 +19,33 @@
 					.set({
 						transform: {position: {x: 10, y: 10}},
 						size: {x: 32, y: 32},
+						motion: {x: 6, y: 4}
+					})
+					.on("update", function() {
+						if(this.transform.position.y < 0 || (this.transform.position.y + this.size.y) > demo.height) {
+							this.motion.y = -this.motion.y;
+
+							if(this.transform.position.y < 0) {
+								this.transform.position.y = 0;
+							}
+
+							if((this.transform.position.y + this.size.y) > demo.height) {
+								this.transform.position.y = demo.height - this.size.y;
+							}
+						}
+
+						if(this.transform.position.x < 0 || (this.transform.position.x + this.size.x) > demo.width) {
+							this.motion.x = -this.motion.x;
+
+							if(this.transform.position.x < 0) {
+								this.transform.position.x = 0;
+							}
+
+							if((this.transform.position.x + this.size.x) > demo.width) {
+								this.transform.position.x = demo.width - this.size.x;
+							}
+							
+						}
 					})
 			);
 
