@@ -22,7 +22,7 @@
 						motion: {x: 6, y: 4}
 					})
 					.on("update", function() {
-						if(this.transform.position.y < 0 || (this.transform.position.y + this.size.y) > demo.height) {
+						/* if(this.transform.position.y < 0 || (this.transform.position.y + this.size.y) > demo.height) {
 							this.motion.y = -this.motion.y;
 
 							if(this.transform.position.y < 0) {
@@ -45,7 +45,7 @@
 								this.transform.position.x = demo.width - this.size.x;
 							}
 							
-						}
+						} */
 					})
 			);
 
