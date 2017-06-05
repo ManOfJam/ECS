@@ -11,9 +11,21 @@ class Spatial extends Component {
 		this.height = height;
 	}
 
-	collidesWith(entity) {
-		if(entity instanceof Entity)
-			if(entity.hasComponent("spatial"))
+	collidesWith(space) {
+		if(space instanceof Entity) {
+			space = space.getComponent("spatial");
+		}
+
+		if(!(space instanceof Spatial)) {
+			return null;
+		}
+
+		return (
+			this.x + this.width < space.x && 
+			this.x > space.x + space.width &&
+			this.y + this.height < space.y &&
+			this.y > space.y + space.height
+		);
 	}
 }
 

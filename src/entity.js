@@ -7,7 +7,7 @@ class Entity extends EventObject {
 	constructor(...components) {
 		super();
 
-		Object.defineProperty(this, id, {value: "#" + Math.random().toString(16).substring(2, 10)});
+		Object.defineProperty(this, "id", {value: "#" + Math.random().toString(16).substring(2, 10)});
 
 		this.components = new Map;
 		this.addComponent.apply(this, components);
