@@ -1,25 +1,25 @@
+const Vector = require("./vector");
+
 class Rectangle {
 	constructor(x, y, width, height) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+		this.position = new Vector(x, y);
+		this.size = new Vector(width, height);
 	}
 
 	get top {
-		return this.y;
+		return this.position.y;
 	}
 
 	get bottom {
-		return this.y + this.height;
+		return this.position.y + this.size.y;
 	}
 
 	get left {
-		return this.x;
+		return this.position.x;
 	}
 
 	get right {
-		return this.x + this.width;
+		return this.position.x + this.size.x;
 	}
 
 	overlaps(rectangle) {
