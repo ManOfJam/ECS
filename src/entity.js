@@ -7,32 +7,40 @@ class Entity extends EventObject {
 	constructor(...components) {
 		super();
 
-		this.id = "#" + Math.random().toString(16).substring(2, 10);
+		Object.defineProperty(this, id, {value: "#" + Math.random().toString(16).substring(2, 10)});
+
+		this.components = new Map;
 		this.addComponent.apply(this, components);
 	}
 
 	addComponent(...components) {
 		for(let component of components) {
-			if(typeof component === "string") {
-				const compConstructor = componentsLib[component.substring(0, 1).toUpperCase() + component.substring(1)];
-
-				if(typeof compConstructor === "function") {
-					component = new compConstructor;
-				}
-			}
-
 			if(component instanceof Component) {
-				this[component.name] = component;
+				this.components.set(component.name, component);
 			}
 		}
 
 		return this;
 	}
 
-	set(data) {
-		extend(this, data);
+	removeComponent(...components) {
+		for(let component of components) {
+			if(component instanceof Component) {
+				this.components.delete(component.name);
+			}
+		}
 
 		return this;
+	}
+
+	hasComponent(...components) {
+		for(let component of components) {
+			if(!this.components.has(component)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
 
