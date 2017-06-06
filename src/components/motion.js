@@ -1,23 +1,12 @@
 const Component = require("../component");
+const Vector = require("../geometry/vector");
 
 class Motion extends Component {
-	constructor(x, y) {
+	constructor(x, y, speed) {
 		super("motion");
 
-		if(typeof x === "object") {
-			if(Array.isArray(x)) {
-				y = x[1];
-				x = x[0];
-				
-			}
-			else if(x) {
-				y = x["y"];
-				x = x["x"];
-			}
-		}
-
-		this.x = (parseInt(x) || 0);
-		this.y = (parseInt(y) || 0);
+		this.direction = new Vector(x, y);
+		this.speed = speed || (typeof x === "object" ? y : 0);
 	}
 }
 

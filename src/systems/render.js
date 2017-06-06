@@ -1,6 +1,6 @@
-const extend = require("../common/extend");
 const Entity = require("../entity");
 const System = require("../system");
+const extend = require("../common/extend");
 
 class Render extends System {
 	constructor(canvas, options) {

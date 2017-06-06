@@ -1,15 +1,25 @@
+const Entity = require("../entity");
 const System = require("../system");
+const Vector = require("../geometry/vector");
 
 class Motion extends System {
 	constructor() {
-		super("transform", "motion");
+		super("spatial", "motion");
 	}
 
-	update(entityPool, delta) {
-		const entities = this.getEntities.apply(this, entityPool);
-		
+	update(entities, delta) {
+		entities = entities.filter(
+			e => e instanceof Entity && this.required.every(r => e.hasComponent(r))
+		);
+
 		for(const entity of entities) {
-			entity.transform.translate(entity.motion);
+			const spatial = entity.getComponent("spatial");
+			const motion = entity.getComponent("motion");
+
+			spatial.translate(
+				Vector.scale(motion.direction, motion.speed)
+			);
+
 			entity.trigger("update");
 		}
 	}

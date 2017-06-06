@@ -38,10 +38,12 @@ class Stage extends EventObject {
 
 					const now = performance.now();
 					const elapsed = now - then;
-					const delta = Math.floor(elapsed / this.interval);
+					let delta = Math.floor(elapsed / this.interval);
 
-					if(delta) {
-						this.tick(delta);
+					while(delta > 0) {
+						this.tick();
+
+						delta -= this.interval;
 						then = now;
 					}
 				};
@@ -67,16 +69,22 @@ class Stage extends EventObject {
 
 	addSystem(...systems) {
 		this.systems = this.systems.concat(systems.filter(system => system instanceof System));
+
+		return this;
 	}
 
 	addEntity(...entities) {
 		this.currentScene.addEntity.apply(this.currentScene, entities);
+
+		return this;
 	}
 
 	addScene(...scenes) {
 		scenes.forEach(s => {
 			if(s instanceof Scene) this.scenes[s.name] = s;
 		});
+
+		return this;
 	}
 
 	update(delta) {
@@ -85,14 +93,20 @@ class Stage extends EventObject {
 				system.update(Object.values(this.currentScene.entities), delta);
 			}
 		});
+
+		return this;
 	}
 
 	start() {
 		this.ticker.start();
+
+		return this;
 	}
 
 	stop() {
 		this.ticker.stop();
+
+		return this;
 	}
 }
 

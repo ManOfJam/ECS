@@ -33,6 +33,14 @@ class Vector {
 		const scalar = new Vector(x, y);
 		return this.set(this.x * scalar.x, this.y * scalar.y);
 	}
+
+	static add(v1, v2) {
+		return new Vector(v1).add(v2);
+	}
+
+	static scale(v1, v2) {
+		return new Vector(v1).scale(v2);
+	}
 }
 
 module.exports = Vector;
