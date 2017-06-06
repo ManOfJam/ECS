@@ -1,7 +1,7 @@
-const EventObject = require("./eventObject.js");
-const System = require("./system.js");
-const Scene = require("./scene.js");
-const extend = require("./common/extend.js");
+const EventObject = require("./eventObject");
+const System = require("./system");
+const Scene = require("./scene");
+const extend = require("./common/extend");
 
 class Stage extends EventObject {
 	constructor(options, ...systems) {

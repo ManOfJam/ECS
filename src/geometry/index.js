@@ -1,5 +1,5 @@
 const geometry = {
-	Vector: require("./vector.js")
+	Vector: require("./vector")
 };
 
 module.exports = geometry;

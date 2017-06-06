@@ -1,5 +1,5 @@
-const Entity = require("./entity.js");
-const EventObject = require("./eventObject.js")
+const Entity = require("./entity");
+const EventObject = require("./eventObject")
 
 class Scene extends EventObject {
 	constructor(name) {

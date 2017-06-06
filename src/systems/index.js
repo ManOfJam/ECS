@@ -1,6 +1,6 @@
 const systems = {
-	Motion: require("./motion.js"),
-	Render: require("./render.js")
+	Motion: require("./motion"),
+	Render: require("./render")
 };
 
 module.exports = systems;

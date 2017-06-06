@@ -1,20 +1,20 @@
-const EventObject = require("./eventObject.js");
-const Component = require("./component.js");
-const componentsLib = require("./components");
-const extend = require("./common/extend.js");
+const EventObject = require("./eventObject");
+const Component = require("./component");
 
 class Entity extends EventObject {
 	constructor(...components) {
 		super();
 
-		Object.defineProperty(this, "id", {value: "#" + Math.random().toString(16).substring(2, 10)});
+		Object.defineProperties(this, {
+			id: {value: "#" + Math.random().toString(16).substring(2, 10)},
+			components: {value: new Map}
+		});
 
-		this.components = new Map;
 		this.addComponent.apply(this, components);
 	}
 
 	addComponent(...components) {
-		for(let component of components) {
+		for(const component of components) {
 			if(component instanceof Component) {
 				this.components.set(component.name, component);
 			}
@@ -24,7 +24,7 @@ class Entity extends EventObject {
 	}
 
 	removeComponent(...components) {
-		for(let component of components) {
+		for(const component of components) {
 			if(component instanceof Component) {
 				this.components.delete(component.name);
 			}
@@ -33,8 +33,12 @@ class Entity extends EventObject {
 		return this;
 	}
 
+	getComponent(component) {
+		return this.components.get(component);
+	}
+
 	hasComponent(...components) {
-		for(let component of components) {
+		for(const component of components) {
 			if(!this.components.has(component)) {
 				return false;
 			}

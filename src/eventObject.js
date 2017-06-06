@@ -1,6 +1,6 @@
 class EventObject {
 	constructor() {
-		this.events = new Map;
+		Object.defineProperty(this, "events", {value: new Map});
 	}
 
 	on(event, callback) {

@@ -1,6 +1,6 @@
 class Component {
 	constructor(name) {
-		this.name = name;
+		Object.defineProperty(this, "name", {value: name});
 	}
 }
 

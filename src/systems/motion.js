@@ -1,4 +1,4 @@
-const System = require("../system.js");
+const System = require("../system");
 
 class Motion extends System {
 	constructor() {

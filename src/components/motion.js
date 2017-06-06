@@ -1,4 +1,4 @@
-const Component = require("../component.js");
+const Component = require("../component");
 
 class Motion extends Component {
 	constructor(x, y) {

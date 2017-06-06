@@ -1,9 +1,10 @@
-const extend = require("../common/extend.js");
-const System = require("../system.js");
+const extend = require("../common/extend");
+const Entity = require("../entity");
+const System = require("../system");
 
 class Render extends System {
 	constructor(canvas, options) {
-		super("transform", "size");
+		super("spatial");
 
 		if(typeof canvas === "string")
 			canvas = document.getElementById(canvas);
@@ -25,18 +26,22 @@ class Render extends System {
 		this.context = canvas.getContext("2d");
 	}
 
-	update(entityPool, delta) {
-		const entities = this.getEntities.apply(this, entityPool);
+	update(entities, delta) {
+		entities = entities.filter(
+			e => e instanceof Entity && this.required.every(r => e.hasComponent(r))
+		);
 
 		this.context.clearRect(0, 0, this.width, this.height);
-		this.context.beginPath();
 
 		for(const entity of entities) {
-			this.context.rect(entity.transform.position.x, entity.transform.position.y, entity.size.x, entity.size.y);
+			const spatial = entity.getComponent("spatial");
+
+			this.context.fillRect(spatial.left, spatial.top, spatial.width, spatial.height);
+
 			entity.trigger("update");
 		}
 
-		this.context.stroke();
+		return this;
 	}
 }
 

@@ -1,12 +1,10 @@
-const Entity = require("./entity.js");
+const Entity = require("./entity");
 
 class System {
 	constructor(...required) {
-		this.required = required.filter(r => typeof r === "string");
-	}
-
-	getEntities(...entities) {
-		return entities.filter(e => e instanceof Entity && this.required.every(r => r in e));
+		Object.defineProperty(this, "required", {
+			value: required.filter(r => typeof r === "string")
+		});
 	}
 }
 
