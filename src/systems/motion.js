@@ -16,9 +16,7 @@ class Motion extends System {
 			const spatial = entity.getComponent("spatial");
 			const motion = entity.getComponent("motion");
 
-			spatial.translate(
-				Vector.scale(motion.direction, motion.speed)
-			);
+			spatial.translate(motion.direction);
 
 			entity.trigger("update");
 		}

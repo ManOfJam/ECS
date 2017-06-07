@@ -18,8 +18,8 @@ class Vector {
 			y = x;
 		}
 
-		this.x = parseInt(x) || 0;
-		this.y = parseInt(y) || 0;
+		this.x = parseFloat(x) || 0;
+		this.y = parseFloat(y) || 0;
 
 		return this;
 	}

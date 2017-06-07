@@ -1,5 +1,6 @@
 const common = {
-	extends: require("./extend")
+	extends: require("./extend"),
+	random: require("./random")
 };
 
 module.exports = common;
