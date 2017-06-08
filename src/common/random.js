@@ -1,5 +1,5 @@
 const random = {
-	seed: 0,
+	seed: Math.random(),
 
 	float(min, max) {
 		min = parseFloat(min) || 0;

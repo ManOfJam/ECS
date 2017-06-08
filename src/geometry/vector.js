@@ -3,6 +3,14 @@ class Vector {
 		this.set(x, y);
 	}
 
+	get length() {
+		return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+	}
+
+	get norm() {
+		return new Vector(this.x / this.length, this.y / this.length);
+	}
+
 	set(x, y) {
 		if(typeof x === "object") {
 			if(Array.isArray(x)) {
@@ -24,9 +32,9 @@ class Vector {
 		return this;
 	}
 
-	add(x, y) {
-		const addend = new Vector(x, y);
-		return this.set(this.x + addend.x, this.y + addend.y);
+	translate(x, y) {
+		const translation = new Vector(x, y);
+		return this.set(this.x + translation.x, this.y + translation.y);
 	}
 
 	scale(x, y) {

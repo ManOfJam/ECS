@@ -34,7 +34,7 @@ class Spatial extends Component {
 	}
 
 	translate(x, y) {
-		this.position.add(x, y);
+		this.position.translate(x, y);
 	}
 
 	scale(x, y) {
