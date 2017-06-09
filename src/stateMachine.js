@@ -1,16 +1,22 @@
 const State = require("./state");
 
 class StateMachine {
-	constructor() {
+	constructor(initialState) {
 
 		Object.defineProperties(this, {
 			states: {value: new Map},
 			current: {value: null, writable: true}
 		});
+
+		this.addState(initialState);
+		this.enterState(initialState);
+
+		console.log(this);
 	}
 
 	addState(...states) {
-		for(const state of this.states) {
+		for(const state of states) {
+			console.log(state);
 			if(state instanceof State) {
 				this.states.set(state.name, state);
 			}

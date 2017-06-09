@@ -1,9 +1,96 @@
 const EventObject = require("./eventObject");
+const StateMachine = require("./stateMachine");
 const System = require("./system");
 const Scene = require("./scene");
 const extend = require("./common/extend");
 
-class Stage extends EventObject {
+class Stage extends StateMachine {
+	constructor() {
+		super(new Scene("main"));
+
+		Object.defineProperties(this, {
+			systems: {value: new Map}
+		});
+	}
+
+	addEntity(...entities) {
+		this.current.addEntity.apply(this.current, entities);
+
+		return this;
+	}
+
+	removeEntiy(...entities) {
+		this.current.removeEntity.apply(this.current, entities);
+
+		return this;
+	}
+
+	hasEntity(...entities) {
+		return this.current.hasEntity.apply(this.current, entities);
+	}
+
+	getEntity(entity) {
+		return this.current.getEntity(entity);
+	}
+
+	addScene(...scenes) {
+		this.addState.apply(this, scenes);
+
+		return this;
+	}
+
+	removeScene(...scenes) {
+		this.removeScene.apply(this, scenes);
+
+		return this;
+	}
+
+	hasScene(...scenes) {
+		return this.hasState.apply(this, scenes);
+	}
+
+	getScene(scene) {
+		return this.getState.apply(this, scene);
+	}
+
+	addSystem(...systems) {
+		for(const system of systems) {
+			if(system instanceof System) {
+				this.systems.set(system.name, system);
+			}
+		}
+
+		return this;
+	}
+
+	removeSystem(...systems) {
+		for(const system of systems) {
+			if(system instanceof System) {
+				this.system.delete(system.name);
+			}
+		}
+
+		return this;
+	}
+
+	hasSystem(...systems) {
+		for(const system of systems) {
+			if(!this.systems.has(systems)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	getSystem(system) {
+		return this.systems.get(system);
+	}
+}
+
+module.exports = Stage;
+
+/* class Stage extends EventObject {
 	constructor(options, ...systems) {
 		super();
 
@@ -110,4 +197,4 @@ class Stage extends EventObject {
 	}
 }
 
-module.exports = Stage;
+module.exports = Stage; */
