@@ -1,7 +1,9 @@
+const EventObject = require("./eventObject");
 const State = require("./state");
 
-class StateMachine {
+class StateMachine extends EventObject {
 	constructor(initialState) {
+		super();
 
 		Object.defineProperties(this, {
 			states: {value: new Map},
@@ -10,6 +12,7 @@ class StateMachine {
 
 		this.addState(initialState);
 		this.enterState(initialState);
+		this.trigger("new");
 	}
 
 	addState(...states) {
@@ -19,6 +22,7 @@ class StateMachine {
 			}
 		}
 
+		this.trigger("addstate");
 		return this;
 	}
 
@@ -26,6 +30,7 @@ class StateMachine {
 		for(const state of states)
 			this.states.delete(state instanceof State ? state.name : state);
 
+		this.trigger("removestate");
 		return this;
 	}
 
@@ -46,8 +51,13 @@ class StateMachine {
 	enterState(state) {
 		const next = this.getState(state);
 
-		if(next)
+		if(next) {
+			if(this.current)
+				this.current.trigger("exit");
+			
 			this.current = next;
+			next.trigger("enter");
+		}
 
 		return this;
 	}

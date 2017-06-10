@@ -13,6 +13,14 @@ class Stage extends StateMachine {
 			ticker: {value: new Ticker}
 		});
 
+		const options = (!(systems[0] instanceof System)) ? systems[0] : {};
+		const settings = {
+			width: 720,
+			height: 720
+		};
+
+		extend(this, settings, options);
+
 		this.addSystem.apply(this, systems);
 	}
 
@@ -34,6 +42,10 @@ class Stage extends StateMachine {
 
 	getEntity(entity) {
 		return this.current.getEntity(entity);
+	}
+
+	getEntities() {
+		return Array.from(this.current.entities).map(entry => entry[1]);
 	}
 
 	addScene(...scenes) {
@@ -102,8 +114,18 @@ class Stage extends StateMachine {
 	}
 
 	update() {
-		for(let system of this.systems) {
+		for(const [name, system] of this.systems) {
+			if(typeof system.update !== "function")
+				continue;
+
+			const entities = this.getEntities().filter(
+				entity => entity.hasComponent.apply(entity, system.required)
+			);
+
+			system.update.apply(system, entities);
 		}
+
+		this.trigger("update");
 	}
 }
 

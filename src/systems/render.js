@@ -26,19 +26,13 @@ class Render extends System {
 		this.context = canvas.getContext("2d");
 	}
 
-	update(entities, delta) {
-		entities = entities.filter(
-			e => e instanceof Entity && this.required.every(r => e.hasComponent(r))
-		);
-
+	update(...entities) {
 		this.context.clearRect(0, 0, this.width, this.height);
 
 		for(const entity of entities) {
 			const spatial = entity.getComponent("spatial");
 
 			this.context.fillRect(spatial.left, spatial.top, spatial.width, spatial.height);
-
-			entity.trigger("update");
 		}
 
 		return this;

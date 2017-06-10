@@ -29,9 +29,9 @@ class EventObject {
 		return this;
 	}
 
-	trigger(event, ...args) {
+	trigger(event, ...params) {
 		if(this.events.has(event)) {
-			this.events.get(event).forEach(e => e.apply(this, args));
+			this.events.get(event).forEach(e => e.apply(this, params));
 		}
 
 		return this;

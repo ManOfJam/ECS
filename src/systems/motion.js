@@ -7,18 +7,12 @@ class Motion extends System {
 		super("motion", "spatial", "motion");
 	}
 
-	update(entities, delta) {
-		entities = entities.filter(
-			e => e instanceof Entity && this.required.every(r => e.hasComponent(r))
-		);
-
+	update(...entities) {
 		for(const entity of entities) {
 			const spatial = entity.getComponent("spatial");
 			const motion = entity.getComponent("motion");
 
 			spatial.translate(motion.movement);
-
-			entity.trigger("update");
 		}
 	}
 }
