@@ -4,7 +4,7 @@ const Vector = require("../geometry/vector");
 
 class Motion extends System {
 	constructor() {
-		super("spatial", "motion");
+		super("motion", "spatial", "motion");
 	}
 
 	update(entities, delta) {

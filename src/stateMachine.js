@@ -10,8 +10,6 @@ class StateMachine {
 
 		this.addState(initialState);
 		this.enterState(initialState);
-
-		console.log(this);
 	}
 
 	addState(...states) {

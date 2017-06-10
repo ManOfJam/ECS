@@ -4,7 +4,7 @@ const extend = require("../common/extend");
 
 class Render extends System {
 	constructor(canvas, options) {
-		super("spatial");
+		super("render", "spatial");
 
 		if(typeof canvas === "string")
 			canvas = document.getElementById(canvas);

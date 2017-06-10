@@ -39,7 +39,7 @@ class Scene extends State {
 	}
 
 	getEntity(entity) {
-		return this.entities.get(entity);
+		return this.entities.get(entity instanceof Entity ? entity.is : entity);
 	}
 }
 

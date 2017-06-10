@@ -33,10 +33,6 @@ class Entity extends EventObject {
 		return this;
 	}
 
-	getComponent(component) {
-		return this.components.get(component);
-	}
-
 	hasComponent(...components) {
 		for(const component of components) {
 			if(!this.components.has(component)) {
@@ -45,6 +41,10 @@ class Entity extends EventObject {
 		}
 
 		return true;
+	}
+
+	getComponent(component) {
+		return this.components.get(component);
 	}
 }
 

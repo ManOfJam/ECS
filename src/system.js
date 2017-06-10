@@ -1,9 +1,11 @@
 const Entity = require("./entity");
 
 class System {
-	constructor(...required) {
-		Object.defineProperty(this, "required", {
-			value: required.filter(r => typeof r === "string")
+	constructor(name, ...required) {
+		
+		Object.defineProperties(this, {
+			name: {value: name},
+			required: {value: required.filter(r => typeof r === "string")}
 		});
 	}
 }
