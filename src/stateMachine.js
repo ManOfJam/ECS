@@ -16,7 +16,6 @@ class StateMachine {
 
 	addState(...states) {
 		for(const state of states) {
-			console.log(state);
 			if(state instanceof State) {
 				this.states.set(state.name, state);
 			}
@@ -50,7 +49,7 @@ class StateMachine {
 		const next = this.getState(state);
 
 		if(next)
-			this.current = state;
+			this.current = next;
 
 		return this;
 	}

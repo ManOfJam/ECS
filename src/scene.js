@@ -14,7 +14,7 @@ class Scene extends State {
 	addEntity(...entities) {
 		for(const entity of entities) {
 			if(entity instanceof Entity) {
-				this.entities.set(entity.name, entity);
+				this.entities.set(entity.id, entity);
 			}
 		}
 
@@ -22,18 +22,15 @@ class Scene extends State {
 	}
 
 	removeEntiy(...entities) {
-		for(const entity of entities) {
-			if(entity instanceof Entity) {
-				this.entities.delete(entity.name, entity);
-			}
-		}
+		for(const entity of entities)
+			this.entities.delete(entity instanceof Entity ? entity.id : entity);
 
 		return this;
 	}
 
 	hasEntity(...entities) {
 		for(const entity of entities) {
-			if(!this.entities.has(entity)) {
+			if(!this.entities.has(entity instanceof Entity ? entity.is : entity)) {
 				return false;
 			}
 		}
