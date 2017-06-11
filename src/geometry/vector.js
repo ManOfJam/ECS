@@ -42,12 +42,12 @@ class Vector {
 		return this.set(this.x * scalar.x, this.y * scalar.y);
 	}
 
-	static add(v1, v2) {
-		return new Vector(v1).add(v2);
+	add(x, y) {
+		return new Vector(this).translate(x, y);
 	}
 
-	static scale(v1, v2) {
-		return new Vector(v1).scale(v2);
+	subtract(x, y) {
+		return new Vector(this).translate(new Vector(x, y).scale(-1));
 	}
 }
 

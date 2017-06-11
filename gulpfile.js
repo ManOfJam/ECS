@@ -37,7 +37,7 @@ gulp.task("dev", function() {
 	}
 
 	if(!fs.existsSync("demo/index.html")) {
-		fs.writeFile("demo/index.html", "<!DOCTYPE html><html lang=\"en-gb\"><head><meta charset=\"UTF-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>ECS | Demo</title></head><body><canvas id=\"canvas\" style=\"border: 1px solid #000; display: block; margin: 72px auto 0;\"></canvas><script src=\"/build/build.js\"></script><script src=\"demo.js\"></script></body></html>");
+		fs.writeFile("demo/index.html", "<!DOCTYPE html><html lang=\"en-gb\"><head><meta charset=\"UTF-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>ECS | Demo</title></head><body><canvas id=\"demo\" style=\"border: 1px solid #000; display: block; margin: 72px auto 0;\"></canvas><script src=\"/build/build.js\"></script><script src=\"demo.js\"></script></body></html>");
 	}
 
 	if(!fs.existsSync("demo/demo.js")) {

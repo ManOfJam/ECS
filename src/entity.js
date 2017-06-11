@@ -25,7 +25,7 @@ class Entity extends EventObject {
 
 	hasComponent(...names) {
 		for(const name of names) {
-			if(!this.components.has(component)) {
+			if(!this.components.has(name)) {
 				return false;
 			}
 		}

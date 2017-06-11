@@ -1,5 +1,5 @@
 const systems = {
-	Motion: require("./motion"),
+	Physics: require("./physics"),
 	Render: require("./render")
 };
 

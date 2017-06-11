@@ -5,7 +5,6 @@ window.engine = {
 	Stage: require("./stage"),
 	System: require("./system"),
 	common: require("./common"),
-	components: require("./components"),
 	geometry: require("./geometry"),
 	systems: require("./systems")
 };

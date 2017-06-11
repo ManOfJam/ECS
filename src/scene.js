@@ -1,11 +1,7 @@
 const Entity = require("./entity");
-const EventObject = require("./eventObject");
-const State = require("./state");
 
-class Scene extends State {
-	constructor(name) {
-		super(name);
-
+class Scene {
+	constructor() {
 		Object.defineProperties(this, {
 			entities: {value: new Map}
 		});

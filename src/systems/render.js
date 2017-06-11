@@ -1,38 +1,84 @@
-const Entity = require("../entity");
 const System = require("../system");
-const extend = require("../common/extend");
+const toRad = require("../common/toRad");
 
 class Render extends System {
-	constructor(canvas, options) {
-		super("render", "spatial");
+	constructor(canvas, width, height) {
+		super("shape", "render");
 
+		this.canvas = canvas;
+
+		if(this.canvas) {
+			this.width = typeof width === "number" ? width : 720;
+			this.height = typeof height === "number" ? height : this.width;
+		}
+	}
+
+	get canvas() {
+		return document.getElementById(this.canvasId);
+	}
+
+	set canvas(canvas) {
 		if(typeof canvas === "string")
 			canvas = document.getElementById(canvas);
 
 		if(!(canvas instanceof HTMLCanvasElement))
-			return;
+			return null;
 
-		const settings = {
-			width: 720,
-			height: 720
-		};
+		this.canvasId = canvas.id;
+	}
 
-		extend(this, settings, options);
+	get context() {
+		return this.canvas.getContext("2d");
+	}
 
-		canvas.setAttribute("width", settings.width);
-		canvas.setAttribute("height", settings.height);
+	get width() {
+		return Number(this.canvas.getAttribute("width"));
+	}
 
-		this.canvas = canvas;
-		this.context = canvas.getContext("2d");
+	set width(width) {
+		width = parseInt(width);
+
+		if(!isNaN(width))
+			this.canvas.setAttribute("width", Math.max(0, width));
+	}
+
+	get height() {
+		return Number(this.canvas.getAttribute("height"));
+	}
+
+	set height(height) {
+		height = parseInt(height);
+
+		if(!isNaN(height))
+			this.canvas.setAttribute("height", Math.max(0, height));
 	}
 
 	update(...entities) {
-		this.context.clearRect(0, 0, this.width, this.height);
+		const context = this.context;
+		context.clearRect(0, 0, this.width, this.height);
 
 		for(const entity of entities) {
-			const spatial = entity.getComponent("spatial");
+			const shape = entity.getComponent("shape");
+			const render = entity.getComponent("render");
 
-			this.context.fillRect(spatial.left, spatial.top, spatial.width, spatial.height);
+			context.save();
+
+			switch(shape.constructor.name) {
+				case "Rectangle": {
+					context.translate(shape.position.x, shape.position.y);
+					context.rotate(toRad(shape.angle));
+					context.fillStyle = render.color;
+
+					context.fillRect(0, 0, shape.size.x, shape.size.y);
+					break;
+				}
+
+				case "Circle": {
+					break;
+				}
+			}
+
+			context.restore();
 		}
 
 		return this;
