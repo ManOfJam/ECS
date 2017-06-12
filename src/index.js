@@ -4,5 +4,8 @@ window.engine = {
 	Scene: require("./core/scene"),
 	Stage: require("./core/stage"),
 	System: require("./core/system"),
-	common: require("./core/common")
+	common: require("./core/common"),
+	components: require("./components"),
+	geometry: require("./geometry"),
+	systems: require("./systems")
 };

@@ -5,15 +5,8 @@ class Scene {
 		if(typeof name !== "string")
 			throw new TypeError("Scene() name argument must be of type string");
 
-		Object.defineProperties(this, {
-			name: {
-				value: name
-			},
-
-			entities: {
-				value: new Map
-			}
-		});
+		this.entities = new Map;
+		this.name = name;
 	}
 
 	addEntity(...entities) {

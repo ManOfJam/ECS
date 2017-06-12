@@ -1,16 +1,21 @@
-const System = require("../system");
-const toRad = require("../common/toRad");
+const System = require("../core/system");
+const extend = require("../core/common/extend");
+const toRad = require("../core/common/toRad");
 
 class Render extends System {
-	constructor(canvas, width, height) {
-		super("shape", "render");
+	constructor(canvas, options) {
+		super("render", "render", "body");
+
+		const settings = {
+			width: 800,
+			height: 600
+		};
+
+		extend(settings, options);
 
 		this.canvas = canvas;
-
-		if(this.canvas) {
-			this.width = typeof width === "number" ? width : 720;
-			this.height = typeof height === "number" ? height : this.width;
-		}
+		this.width = settings.width;
+		this.height = settings.height;
 	}
 
 	get canvas() {
@@ -22,28 +27,13 @@ class Render extends System {
 			canvas = document.getElementById(canvas);
 
 		if(!(canvas instanceof HTMLCanvasElement))
-			return null;
+			return;
 
 		this.canvasId = canvas.id;
 	}
 
-	get context() {
-		return this.canvas.getContext("2d");
-	}
-
-	get width() {
-		return Number(this.canvas.getAttribute("width"));
-	}
-
-	set width(width) {
-		width = parseInt(width);
-
-		if(!isNaN(width))
-			this.canvas.setAttribute("width", Math.max(0, width));
-	}
-
 	get height() {
-		return Number(this.canvas.getAttribute("height"));
+		return this.canvas.getAttribute("height");
 	}
 
 	set height(height) {
@@ -53,35 +43,50 @@ class Render extends System {
 			this.canvas.setAttribute("height", Math.max(0, height));
 	}
 
-	update(...entities) {
-		const context = this.context;
+	get width() {
+		return this.canvas.getAttribute("width");
+	}
+
+	set width(width) {
+		width = parseInt(width);
+
+		if(!isNaN(width))
+			this.canvas.setAttribute("width", Math.max(0, width));
+	}
+
+	update(delta, ...entities) {
+		const context = this.canvas.getContext("2d");
+
 		context.clearRect(0, 0, this.width, this.height);
 
 		for(const entity of entities) {
-			const shape = entity.getComponent("shape");
+			const body = entity.getComponent("body");
 			const render = entity.getComponent("render");
+			const vertices = body.vertices;
 
 			context.save();
+			context.translate(body.position.x, body.position.y);
+			context.rotate(toRad(body.angle))
 
-			switch(shape.constructor.name) {
-				case "Rectangle": {
-					context.translate(shape.position.x, shape.position.y);
-					context.rotate(toRad(shape.angle));
-					context.fillStyle = render.color;
+			context.beginPath();
+			context.moveTo(vertices[0].x, vertices[0].y);
 
-					context.fillRect(0, 0, shape.size.x, shape.size.y);
-					break;
-				}
+			let i = vertices.length;
+			while(i--)
+				context.lineTo(vertices[i].x, vertices[i].y);
+			
+			context.fillStyle = render.fill;
+			context.strokeStyle = render.line;
+			context.lineWitdth = render.lineWidth;
+			context.globalAlpha = render.opacity;
 
-				case "Circle": {
-					break;
-				}
-			}
 
+			if(render.lineWidth > 0)
+				context.stroke();
+
+			context.fill();
 			context.restore();
 		}
-
-		return this;
 	}
 }
 

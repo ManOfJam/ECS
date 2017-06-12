@@ -1,16 +1,10 @@
 const Component = require("./component");
+const random = require("./common/random");
 
 class Entity {
 	constructor() {
-		Object.defineProperties(this, {
-			components: {
-				value: new Map
-			},
-
-			id: {
-				value: "#" + Math.random().toString(16).substring(2, 10)
-			}
-		});
+		this.components = new Map;
+		this.id ="#" + random.int().toString(16).substring(2, 10);
 	}
 
 	addComponent(...components) {
@@ -47,7 +41,7 @@ class Entity {
 
 	getComponent(component) {
 		if(component instanceof Component || typeof component === "string")
-			return this.scenes.get(component.name || component);
+			return this.components.get(component.name || component);
 	}
 }
 

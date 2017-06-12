@@ -12,24 +12,10 @@ class Stage {
 
 		extend(settings, options);
 
-		Object.defineProperties(this, {
-			scene: {
-				writable: true
-			},
-
-			scenes: {
-				value: new Map
-			},
-
-			systems: {
-				value: new Map
-			},
-
-			ticker: {
-				value: new Ticker(settings.interval, settings.autorun)
-			}
-		});
-
+		this.scene = null;
+		this.scenes = new Map;
+		this.systems = new Map;
+		this.ticker = new Ticker(settings.interval, settings.autorun);
 		this.addScene(new Scene("index"));
 		this.enterScene("index");
 	}
