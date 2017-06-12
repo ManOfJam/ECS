@@ -4,7 +4,14 @@ const Ticker = require("./ticker");
 const extend = require("./common/extend");
 
 class Stage {
-	constructor() {
+	constructor(options) {
+		const settings = {
+			autorun: false,
+			interval: 10
+		};
+
+		extend(settings, options);
+
 		Object.defineProperties(this, {
 			scene: {
 				writable: true
@@ -19,7 +26,7 @@ class Stage {
 			},
 
 			ticker: {
-				value: new Ticker
+				value: new Ticker(settings.interval, settings.autorun)
 			}
 		});
 

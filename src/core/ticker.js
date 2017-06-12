@@ -7,7 +7,7 @@ class Ticker {
 			},
 
 			interval: {
-				value: Math.abs(parseInt(interval)) || 1,
+				value: Math.max(1, (parseInt(interval) || 1)),
 				writable: true
 			},
 

@@ -1,5 +1,5 @@
 const common = {
-	extends: require("./extend"),
+	extend: require("./extend"),
 	random: require("./random"),
 	toDeg: require("./toDeg"),
 	toRad: require("./toRad")
