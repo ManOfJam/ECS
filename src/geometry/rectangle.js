@@ -2,8 +2,6 @@ const Vector = require("./vector");
 
 class Rectangle {
 	constructor(x, y, width, height) {
-		super();
-
 		if(typeof x === "object") {
 			x = new Vector(x);
 			height = width;
