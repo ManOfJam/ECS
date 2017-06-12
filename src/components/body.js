@@ -30,7 +30,7 @@ class Body extends Component {
 		return this;
 	}
 
-	rotate(deg) {
+	rotate(deg, about) {
 		this.angle = (this.angle + deg) % 360;
 
 		return this;

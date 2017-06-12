@@ -1,3 +1,5 @@
+const toRad = require("../core/common/toRad");
+
 class Vector {
 	constructor(x, y) {
 		this.set(x, y);
@@ -35,6 +37,14 @@ class Vector {
 	translate(x, y) {
 		const translation = new Vector(x, y);
 		return this.set(this.x + translation.x, this.y + translation.y);
+	}
+
+	rotate(deg) {
+		const rad = toRad(deg);
+		return this.set(
+			this.x * Math.cos(rad) - this.y * Math.sin(rad),
+			this.x * Math.sin(rad) + this.y * Math.cos(rad),
+		);
 	}
 
 	scale(x, y) {

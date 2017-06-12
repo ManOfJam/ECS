@@ -80,7 +80,6 @@ class Render extends System {
 			context.lineWitdth = render.lineWidth;
 			context.globalAlpha = render.opacity;
 
-
 			if(render.lineWidth > 0)
 				context.stroke();
 

@@ -4,7 +4,7 @@ const random = require("./common/random");
 class Entity {
 	constructor() {
 		this.components = new Map;
-		this.id ="#" + random.int().toString(16).substring(2, 10);
+		this.id ="#" + random.float().toString(16).substring(2, 8);
 	}
 
 	addComponent(...components) {
