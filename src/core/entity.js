@@ -1,40 +1,53 @@
-const EventObject = require("./eventObject");
+const Component = require("./component");
 
-class Entity extends EventObject {
+class Entity {
 	constructor() {
-		super();
-
 		Object.defineProperties(this, {
-			components: {value: new Map},
-			id: {value: "#" + Math.random().toString(16).substring(2, 10)}
+			components: {
+				value: new Map
+			},
+
+			id: {
+				value: "#" + Math.random().toString(16).substring(2, 10)
+			}
 		});
 	}
 
-	addComponent(name, component) {
-		this.components.set(name, component)
+	addComponent(...components) {
+		for(const component of components) {
+			if(component instanceof Component) {
+				this.components.set(component.name, component);
+			}
+		}
 
 		return this;
 	}
 
-	removeComponent(...names) {
-		for(const name of names)
-			this.components.delete(name);
+	removeComponent(...components) {
+		for(const component of components) {
+			if(component instanceof Component || typeof component === "sting") {
+				this.components.delete(component.name || component);
+			}
+		}
 
 		return this;
 	}
 
-	hasComponent(...names) {
-		for(const name of names) {
-			if(!this.components.has(name)) {
-				return false;
+	hasComponent(...components) {
+		for(const component of components) {
+			if(component instanceof Component || typeof component === "string") {
+				if(!(this.components.has(component.name || component))) {
+					return false;
+				}
 			}
 		}
 
 		return true;
 	}
 
-	getComponent(name) {
-		return this.components.get(name);
+	getComponent(component) {
+		if(component instanceof Component || typeof component === "string")
+			return this.scenes.get(component.name || component);
 	}
 }
 

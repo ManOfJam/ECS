@@ -1,10 +1,8 @@
 window.engine = {
-	Entity: require("./entity"),
-	EventObject: require("./eventObject"),
-	Scene: require("./scene"),
-	Stage: require("./stage"),
-	System: require("./system"),
-	common: require("./common"),
-	geometry: require("./geometry"),
-	systems: require("./systems")
+	Component: require("./core/component"),
+	Entity: require("./core/entity"),
+	Scene: require("./core/scene"),
+	Stage: require("./core/stage"),
+	System: require("./core/system"),
+	common: require("./core/common")
 };

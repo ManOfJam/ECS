@@ -1,9 +1,18 @@
 const Entity = require("./entity");
 
 class Scene {
-	constructor() {
+	constructor(name) {
+		if(typeof name !== "string")
+			throw new TypeError("Scene() name argument must be of type string");
+
 		Object.defineProperties(this, {
-			entities: {value: new Map}
+			name: {
+				value: name
+			},
+
+			entities: {
+				value: new Map
+			}
 		});
 	}
 
@@ -17,17 +26,22 @@ class Scene {
 		return this;
 	}
 
-	removeEntiy(...entities) {
-		for(const entity of entities)
-			this.entities.delete(entity instanceof Entity ? entity.id : entity);
+	removeEntity(...entities) {
+		for(const entity of entities) {
+			if(entity instanceof Entity || typeof entity === "sting") {
+				this.entities.delete(entity.id || entity);
+			}
+		}
 
 		return this;
 	}
 
 	hasEntity(...entities) {
 		for(const entity of entities) {
-			if(!this.entities.has(entity instanceof Entity ? entity.is : entity)) {
-				return false;
+			if(entity instanceof Entity || typeof entity === "string") {
+				if(!(this.entities.has(entity.id || entity))) {
+					return false;
+				}
 			}
 		}
 
@@ -35,7 +49,8 @@ class Scene {
 	}
 
 	getEntity(entity) {
-		return this.entities.get(entity instanceof Entity ? entity.is : entity);
+		if(entity instanceof Entity || typeof entity === "string")
+			return this.scenes.get(entity.id || entity);
 	}
 }
 

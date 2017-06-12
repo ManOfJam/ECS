@@ -1,16 +1,25 @@
 class Ticker {
-	constructor() {
-
+	constructor(interval, autorun) {
 		Object.defineProperties(this, {
-			running: {value: false, writable: true},
-			interval: {value: 10, writable: true},
-			frameId: {value: null, writable: true}
+			active: {
+				value: !!autorun,
+				writable: true
+			},
+
+			interval: {
+				value: Math.abs(parseInt(interval)) || 1,
+				writable: true
+			},
+
+			frameId: {
+				value: null,
+				writable: true
+			}
 		});
 	}
 
 	start(callback) {
-
-		if(this.running)
+		if(this.active)
 			return;
 
 		let then = performance.now();
@@ -21,24 +30,22 @@ class Ticker {
 			const elapsed = now - then;
 			let delta = Math.floor(elapsed / this.interval);
 
-			while(delta > 0) {
-				callback();
-
-				delta -= this.interval;
+			if(delta) {
+				callback(delta);
 				then = now;
 			}
 		};
 
 		this.frameId = requestAnimationFrame(frame);
-		this.running = true;
+		this.active = true;
 	}
 
 	stop() {
-		if(!this.running)
+		if(!this.active)
 			return;
 
 		cancelAnimationFrame(this.frameId);
-		this.running = false;
+		this.active = false;
 	}
 }
 
