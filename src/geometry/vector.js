@@ -28,8 +28,8 @@ class Vector {
 			y = x;
 		}
 
-		this.x = parseFloat(x) || 0;
-		this.y = parseFloat(y) || 0;
+		this.x = Math.floor(parseFloat(x) * 1000) / 1000 || 0;
+		this.y = Math.floor(parseFloat(y) * 1000) / 1000 || 0;
 
 		return this;
 	}
