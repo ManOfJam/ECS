@@ -11,7 +11,7 @@ class Render extends Component {
 			lineWidth: 0,
 			opacity: 1
 		};
-
+		
 		extend(this, settings, options);
 	}
 }

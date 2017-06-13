@@ -1,28 +1,18 @@
-function extend(target, sources, options) {
-	if(!target || !sources)
-		return;
+function extend(target, ...sources) {
+	if(!(target instanceof Object))
+		throw new TypeError("extend() target argument must be instance of Object");
 
-	if(!Array.isArray(sources))
-		sources = [sources];
-
-	const settings = {
-		overwrite: true,
-		deep: true
-	};
-
-	extend(settings, options);
-
-	for(let source of sources) {
-		for(let key in source) {
-			if(settings.deep && source[key] && source[key].constructor === Object) {
-				if(source[key] && source[key].constructor === Object) {
+	for(const source of sources) {
+		for(const key in source) {
+			if(source[key] && source[key] instanceof Object) {
+				if(source[key] && source[key] instanceof Object) {
 					extend(target[key], source[key]);
 				}
-				else if(!key in target || settings.overwrite) {
+				else {
 					target[key] = extend({}, source[key])
 				}
 			}
-			else if(!key in target || settings.overwrite) {
+			else{
 				target[key] = source[key];
 			}
 		}
