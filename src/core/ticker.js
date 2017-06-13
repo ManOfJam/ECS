@@ -1,9 +1,9 @@
 class Ticker {
 	constructor(interval, autorun) {
 		Object.defineProperties(this, {
-			active: {value: !!autorun},
+			active: {value: !!autorun, writable: true},
 			frameId: {value: null, writable: true},
-			interval: {value: Math.max(1, (parseInt(interval) || 1))};
+			interval: {value: Math.max(1, (parseInt(interval) || 1))}
 		});
 	}
 
