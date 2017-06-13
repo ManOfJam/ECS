@@ -8,7 +8,8 @@ class Render extends System {
 
 		const settings = {
 			width: 800,
-			height: 600
+			height: 600,
+			drawBounds: true
 		};
 
 		extend(settings, options);
@@ -16,6 +17,7 @@ class Render extends System {
 		this.canvas = canvas;
 		this.width = settings.width;
 		this.height = settings.height;
+		this.drawBounds = settings.drawBounds;
 	}
 
 	get canvas() {
@@ -64,9 +66,7 @@ class Render extends System {
 			const render = entity.getComponent("render");
 			const vertices = body.vertices;
 
-			context.save();
-			context.translate(body.position.x, body.position.y);
-			context.rotate(toRad(body.angle))
+			body.rotate(1);
 
 			context.beginPath();
 			context.moveTo(vertices[0].x, vertices[0].y);
@@ -74,7 +74,8 @@ class Render extends System {
 			let i = vertices.length;
 			while(i--)
 				context.lineTo(vertices[i].x, vertices[i].y);
-			
+
+			context.save();
 			context.fillStyle = render.fill;
 			context.strokeStyle = render.line;
 			context.lineWitdth = render.lineWidth;
@@ -85,6 +86,9 @@ class Render extends System {
 
 			context.fill();
 			context.restore();
+
+			if(this.drawBounds)
+				context.strokeRect(body.bounds.position.x, body.bounds.position.y, body.bounds.size.x, body.bounds.size.y);
 		}
 	}
 }

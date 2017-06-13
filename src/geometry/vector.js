@@ -13,6 +13,10 @@ class Vector {
 		return new Vector(this.x / this.length, this.y / this.length);
 	}
 
+	get negation() {
+		return new Vector(this).scale(-1);
+	}
+
 	set(x, y) {
 		if(typeof x === "object") {
 			if(Array.isArray(x)) {
@@ -58,6 +62,29 @@ class Vector {
 
 	subtract(x, y) {
 		return new Vector(this).translate(new Vector(x, y).scale(-1));
+	}
+
+	static parseVector(x, y) {
+		if(typeof x === "object") {
+			if(Array.isArray(x)) {
+				y = x[1];
+				x = x[0];
+			}
+			else if(x) {
+				y = x.y;
+				x = x.x;
+			}
+		}
+		else if(x && isNaN(parseInt(y))) {
+			y = x;
+		}
+
+		if(typeof x === "number" && typeof y === "number") {
+			return new Vector(x, y);
+		}
+		else {
+			return null;
+		}
 	}
 }
 
