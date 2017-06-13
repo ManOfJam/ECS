@@ -3,8 +3,10 @@ const random = require("./common/random");
 
 class Entity {
 	constructor() {
-		this.components = new Map;
-		this.id ="#" + random.float().toString(16).substring(2, 8);
+		Object.defineProperties(this, {
+			components: {value: new Map},
+			id: {value: "#" + random.float().toString(16).substring(2, 8)}
+		});
 	}
 
 	addComponent(...components) {

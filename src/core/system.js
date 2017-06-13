@@ -3,8 +3,10 @@ class System {
 		if(typeof name !== "string")
 			throw new TypeError("System() name argument must be of type string");
 
-		this.name = name;
-		this.required = required.filter(r => typeof r === "string");
+		Object.defineProperties(this, {
+			name: {value: name},
+			required: {value: required.filter(r => typeof r === "string")}
+		});
 	}
 }
 

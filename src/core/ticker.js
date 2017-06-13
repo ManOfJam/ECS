@@ -1,8 +1,10 @@
 class Ticker {
 	constructor(interval, autorun) {
-		this.active = !!autorun;
-		this.interval = Math.max(1, (parseInt(interval) || 1));
-		this.frameId = null;
+		Object.defineProperties(this, {
+			active: {value: !!autorun},
+			frameId: {value: null, writable: true},
+			interval: {value: Math.max(1, (parseInt(interval) || 1))};
+		});
 	}
 
 	start(callback) {

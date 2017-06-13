@@ -5,10 +5,14 @@ class Render extends Component {
 	constructor(options) {
 		super("render");
 
-		this.fill = options.fill || "#000";
-		this.line = options.line || "#000";
-		this.lineWidth = Math.max(0, parseInt(options.lineWidth)) || 0;
-		this.opacity = Math.max(0, Math.min(1, parseInt(options.lineWidth))) || 1;
+		const settings = {
+			fill: "#000",
+			line: "#000",
+			lineWidth: 0,
+			opacity: 1
+		};
+
+		extend(this, settings, options);
 	}
 }
 

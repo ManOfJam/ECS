@@ -5,7 +5,7 @@ const Vector = require("../geometry/vector");
 class Body extends Component {
 	constructor() {
 		super("body");
-		
+
 		this.vertices = [];
 	}
 
@@ -59,7 +59,7 @@ class Body extends Component {
 		return this;
 	}
 
-	rotate(deg, ...about) {
+	rotate(deg, about) {
 		deg = (parseFloat(deg) % 360) || 0;
 		about = Vector.parseVector(about) || this.centroid;
 

@@ -12,10 +12,13 @@ class Stage {
 
 		extend(settings, options);
 
-		this.scene = null;
-		this.scenes = new Map;
-		this.systems = new Map;
-		this.ticker = new Ticker(settings.interval, settings.autorun);
+		Object.defineProperties(this, {
+			scene: {writable: true},
+			scenes: {value: new Map},
+			systems: {value: new Map},
+			ticker: {value: new Ticker(settings.interval, settings.autorun)}
+		});
+
 		this.addScene(new Scene("index"));
 		this.enterScene("index");
 	}
@@ -125,10 +128,14 @@ class Stage {
 
 	start() {
 		this.ticker.start(this.update.bind(this));
+
+		return this;
 	}
 
 	stop() {
 		this.ticker.stop();
+
+		return this;
 	}
 
 	update(delta) {
@@ -142,6 +149,8 @@ class Stage {
 
 			system.update(delta, ...entities);
 		}
+
+		return this;
 	}
 }
 

@@ -6,18 +6,18 @@ class Render extends System {
 	constructor(canvas, options) {
 		super("render", "render", "body");
 
+		this.canvas = canvas;
+
+		if(!this.canvas)
+			return null;
+
 		const settings = {
 			width: 800,
 			height: 600,
-			drawBounds: true
+			drawBounds: false
 		};
 
-		extend(settings, options);
-
-		this.canvas = canvas;
-		this.width = settings.width;
-		this.height = settings.height;
-		this.drawBounds = settings.drawBounds;
+		extend(this, settings, options);
 	}
 
 	get canvas() {
@@ -66,8 +66,6 @@ class Render extends System {
 			const render = entity.getComponent("render");
 			const vertices = body.vertices;
 
-			body.rotate(1);
-
 			context.beginPath();
 			context.moveTo(vertices[0].x, vertices[0].y);
 
@@ -87,8 +85,14 @@ class Render extends System {
 			context.fill();
 			context.restore();
 
-			if(this.drawBounds)
-				context.strokeRect(body.bounds.position.x, body.bounds.position.y, body.bounds.size.x, body.bounds.size.y);
+			if(this.drawBounds) {
+				context.strokeRect(
+					body.bounds.position.x,
+					body.bounds.position.y,
+					body.bounds.size.x,
+					body.bounds.size.y
+				);
+			}
 		}
 	}
 }
