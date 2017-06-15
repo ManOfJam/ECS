@@ -10,6 +10,9 @@ class Vector {
 	}
 
 	get norm() {
+		if(!this.length)
+			return new Error("Cannot normalise a zero length vector.");
+		
 		return new Vector(this.x / this.length, this.y / this.length);
 	}
 
@@ -18,7 +21,7 @@ class Vector {
 	}
 
 	set(x, y) {
-		if(typeof x === "object") {
+		if(x instanceof Object) {
 			if(Array.isArray(x)) {
 				y = x[1];
 				x = x[0];
@@ -28,7 +31,8 @@ class Vector {
 				x = x.x;
 			}
 		}
-		else if(x && isNaN(parseInt(y))) {
+		
+		if(isNaN(parseInt(y))) {
 			y = x;
 		}
 
@@ -65,17 +69,18 @@ class Vector {
 	}
 
 	static parseVector(x, y) {
-		if(typeof x === "object") {
+		if(x instanceof Object) {
 			if(Array.isArray(x)) {
 				y = x[1];
 				x = x[0];
 			}
-			else if(x) {
+			else {
 				y = x.y;
 				x = x.x;
 			}
 		}
-		else if(x && isNaN(parseInt(y))) {
+		
+		if(isNaN(parseInt(y))) {
 			y = x;
 		}
 

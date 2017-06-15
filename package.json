@@ -4,7 +4,6 @@
   "description": "",
   "main": "src",
   "scripts": {
-    "build": "./node_modules/.bin/browserify src build/build.js",
     "dev": "./node_modules/.bin/gulp dev"
   },
   "keywords": [],

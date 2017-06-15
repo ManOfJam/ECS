@@ -12,7 +12,7 @@ function extend(target, ...sources) {
 					target[key] = extend({}, source[key])
 				}
 			}
-			else{
+			else {
 				target[key] = source[key];
 			}
 		}
