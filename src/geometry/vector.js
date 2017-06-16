@@ -21,7 +21,7 @@ class Vector {
 	}
 
 	set(x, y) {
-		if(x instanceof Object) {
+		if(x && typeof x === "object") {
 			if(Array.isArray(x)) {
 				y = x[1];
 				x = x[0];
@@ -69,7 +69,7 @@ class Vector {
 	}
 
 	static parseVector(x, y) {
-		if(x instanceof Object) {
+		if(x && typeof x === "object") {
 			if(Array.isArray(x)) {
 				y = x[1];
 				x = x[0];

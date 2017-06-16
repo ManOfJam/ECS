@@ -1,11 +1,8 @@
 function extend(target, ...sources) {
-	if(!(target instanceof Object))
-		throw new TypeError("extend() target argument must be instance of Object");
-
 	for(const source of sources) {
 		for(const key in source) {
-			if(source[key] && source[key] instanceof Object) {
-				if(source[key] && source[key] instanceof Object) {
+			if(source[key] && typeof source[key] === "object") {
+				if(target[key] && typeof target[key] === "object") {
 					extend(target[key], source[key]);
 				}
 				else {
