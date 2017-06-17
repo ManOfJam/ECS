@@ -61,8 +61,8 @@ class Body extends Component {
 
 	rotate(deg, about) {
 		deg = (parseFloat(deg) % 360) || 0;
-		about = Vector.parseVector(about) || this.centroid;
-
+		about = (about !== undefined && about !== null) ? new Vector(about) : this.centroid;
+		
 		for(const vertext of this.vertices) {
 			vertext.translate(about.negation);
 			vertext.rotate(deg);

@@ -5,22 +5,29 @@ const extend = require("./common/extend");
 
 class Stage {
 	constructor(options) {
-		const settings = {
+		const defaults = {
 			autorun: false,
-			interval: 10
+			interval: 10,
+			height: 600,
+			width: 800
 		};
 
-		extend(settings, options);
+		const settings = extend(defaults, options);
 
 		Object.defineProperties(this, {
 			scene: {writable: true},
 			scenes: {value: new Map},
 			systems: {value: new Map},
-			ticker: {value: new Ticker(settings.interval, settings.autorun)}
+			ticker: {value: new Ticker(settings.interval)}
 		});
 
+		this.width = parseInt(settings.width) || defaults.width;
+		this.height = parseInt(settings.height) || defaults.height;
 		this.addScene(new Scene("index"));
 		this.enterScene("index");
+
+		if(settings.autorun)
+			this.start();
 	}
 
 	addScene(...scenes) {

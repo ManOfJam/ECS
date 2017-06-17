@@ -37,4 +37,4 @@ gulp.task("serve", () => {
 		}));
 });
 
-gulp.task("default", ["build", "watch", "serve"]);
+gulp.task("dev", ["build", "watch", "serve"]);

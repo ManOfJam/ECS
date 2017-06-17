@@ -10,10 +10,7 @@ class Vector {
 	}
 
 	get norm() {
-		if(!this.length)
-			return new Error("Cannot normalise a zero length vector.");
-		
-		return new Vector(this.x / this.length, this.y / this.length);
+		return this.length ? new Vector(this.x / this.length, this.y / this.length) : null;
 	}
 
 	get negation() {
@@ -31,13 +28,13 @@ class Vector {
 				x = x.x;
 			}
 		}
-		
-		if(isNaN(parseInt(y))) {
+
+		if(typeof y !== "number") {
 			y = x;
 		}
 
-		this.x = Math.floor(parseFloat(x) * 1000) / 1000 || 0;
-		this.y = Math.floor(parseFloat(y) * 1000) / 1000 || 0;
+		this.x = typeof x === "number" ? x : 0;
+		this.y = typeof y === "number" ? y : 0;
 
 		return this;
 	}

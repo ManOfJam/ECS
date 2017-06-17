@@ -34,6 +34,10 @@ class Render extends System {
 		this.canvasId = canvas.id;
 	}
 
+	get context() {
+		return this.canvas ? this.canvas.getContext("2d") : null;
+	}
+
 	get height() {
 		return this.canvas.getAttribute("height");
 	}
@@ -57,8 +61,7 @@ class Render extends System {
 	}
 
 	update(delta, ...entities) {
-		const context = this.canvas.getContext("2d");
-
+		const context = this.context;
 		context.clearRect(0, 0, this.width, this.height);
 
 		for(const entity of entities) {
