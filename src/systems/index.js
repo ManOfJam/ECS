@@ -1,5 +1,6 @@
 const systems = {
-	Render: require("./render")
+	Render: require("./render"),
+	Physics: require("./physics")
 };
 
 module.exports = systems;
