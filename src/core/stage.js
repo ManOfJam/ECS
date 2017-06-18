@@ -8,8 +8,8 @@ class Stage {
 		const defaults = {
 			autorun: false,
 			interval: 10,
-			height: 600,
-			width: 800
+			height: 720,
+			width: 720
 		};
 
 		const settings = extend(defaults, options);

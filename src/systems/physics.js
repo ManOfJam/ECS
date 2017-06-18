@@ -12,6 +12,9 @@ class Physics extends System {
 
 			if(physics.angularVelocity)
 				body.rotate(physics.angularVelocity);
+
+			if(physics.velocity.length)
+				body.translate(physics.velocity);
 		}
 	}
 }
