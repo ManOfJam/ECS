@@ -1,13 +1,12 @@
 const Scene = require("./scene");
 const System = require("./system");
-const Ticker = require("./ticker");
 const extend = require("./common/extend");
 
 class Stage {
 	constructor(options) {
 		const defaults = {
 			autorun: false,
-			interval: 10,
+			interval: 1,
 			height: 720,
 			width: 720
 		};
@@ -15,10 +14,12 @@ class Stage {
 		const settings = extend(defaults, options);
 
 		Object.defineProperties(this, {
+			active: {writable: true},
+			frameId: {writable: true},
+			interval: {value: Math.max(1, (parseInt(settings.interval) || 1))},
 			scene: {writable: true},
 			scenes: {value: new Map},
 			systems: {value: new Map},
-			ticker: {value: new Ticker(settings.interval)}
 		});
 
 		this.width = parseInt(settings.width) || defaults.width;
@@ -134,13 +135,33 @@ class Stage {
 	}
 
 	start() {
-		this.ticker.start(this.update.bind(this));
+		if(!this.active) {
+			let then = performance.now();
+			const frame = () => {
+				this.frameId = requestAnimationFrame(frame);
+
+				const now = performance.now();
+				const elapsed = now - then;
+				let delta = Math.floor(elapsed / this.interval);
+
+				if(delta) {
+					this.update(delta);
+					then = now;
+				}
+			};
+
+			this.frameId = requestAnimationFrame(frame);
+			this.active = true;
+		}
 
 		return this;
 	}
 
 	stop() {
-		this.ticker.stop();
+		if(this.active) {
+			cancelAnimationFrame(this.frameId);
+			this.active = false;
+		}
 
 		return this;
 	}
@@ -150,8 +171,7 @@ class Stage {
 			if(typeof system.update !== "function")
 				continue;
 
-			const entities = Array.from(this.scene.entities)
-				.map(entry => entry[1])
+			const entities = Array.from(this.scene.entities.values())
 				.filter(entity => entity.hasComponent(...system.required));
 
 			system.update(delta, ...entities);
