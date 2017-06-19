@@ -2,22 +2,6 @@ const toRad = require("../core/common/toRad");
 
 class Vector {
 	constructor(x, y) {
-		this.set(x, y);
-	}
-
-	get length() {
-		return Math.hypot(this.x, this.y);
-	}
-
-	get norm() {
-		return this.length ? new Vector(this.x / this.length, this.y / this.length) : null;
-	}
-
-	get negation() {
-		return new Vector(this).scale(-1);
-	}
-
-	set(x, y) {
 		if(x && typeof x === "object") {
 			if(Array.isArray(x)) {
 				y = x[1];
@@ -39,22 +23,49 @@ class Vector {
 		return this;
 	}
 
+	get length() {
+		return Math.hypot(this.x, this.y);
+	}
+
+	get negation() {
+		return new Vector(this).scale(-1);
+	}
+
+	get norm() {
+		return this.length ? new Vector(this.x / this.length, this.y / this.length) : null;
+	}
+
 	translate(x, y) {
 		const translation = new Vector(x, y);
-		return this.set(this.x + translation.x, this.y + translation.y);
+
+		this.x += translation.x;
+		this.y += translation.y;
+
+		this.trigger("translate");
+
+		return this;
 	}
 
 	rotate(deg) {
 		const rad = toRad(deg);
-		return this.set(
-			this.x * Math.cos(rad) - this.y * Math.sin(rad),
-			this.x * Math.sin(rad) + this.y * Math.cos(rad),
-		);
+
+		this.x *= Math.cos(rad) - this.y * Math.sin(rad);
+		this.y *= Math.cos(rad) + this.x * Math.sin(rad);
+
+		this.trigger("rotate");
+
+		return this;
 	}
 
 	scale(x, y) {
 		const scalar = new Vector(x, y);
-		return this.set(this.x * scalar.x, this.y * scalar.y);
+
+		this.x += scalar.x;
+		this.y *= scalar.y;
+
+		this.trigger("scale");
+
+		return this;
 	}
 
 	add(x, y) {
@@ -62,31 +73,7 @@ class Vector {
 	}
 
 	subtract(x, y) {
-		return new Vector(this).translate(new Vector(x, y).scale(-1));
-	}
-
-	static parseVector(x, y) {
-		if(x && typeof x === "object") {
-			if(Array.isArray(x)) {
-				y = x[1];
-				x = x[0];
-			}
-			else {
-				y = x.y;
-				x = x.x;
-			}
-		}
-		
-		if(isNaN(parseInt(y))) {
-			y = x;
-		}
-
-		if(typeof x === "number" && typeof y === "number") {
-			return new Vector(x, y);
-		}
-		else {
-			return null;
-		}
+		return new Vector(this).translate(new Vector(x, y).negation);
 	}
 }
 
