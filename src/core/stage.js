@@ -1,9 +1,12 @@
+const EventObject = require("./eventObject");
 const Scene = require("./scene");
 const System = require("./system");
 const extend = require("./common/extend");
 
-class Stage {
+class Stage extends EventObject {
 	constructor(options) {
+		super();
+		
 		const defaults = {
 			autorun: false,
 			interval: 1,
@@ -17,7 +20,7 @@ class Stage {
 			active: {writable: true},
 			frameId: {writable: true},
 			interval: {value: Math.max(1, (parseInt(settings.interval) || 1))},
-			scene: {writable: true},
+			scene:{writable: true},
 			scenes: {value: new Map},
 			systems: {value: new Map},
 		});
@@ -71,6 +74,8 @@ class Stage {
 	enterScene(scene) {
 		if(this.hasScene(scene))
 			this.scene = this.getScene(scene);
+
+		this.scene.trigger("enter");
 
 		return this;
 	}
@@ -154,6 +159,8 @@ class Stage {
 			this.active = true;
 		}
 
+		this.trigger("start");
+
 		return this;
 	}
 
@@ -162,6 +169,8 @@ class Stage {
 			cancelAnimationFrame(this.frameId);
 			this.active = false;
 		}
+
+		this.trigger("stop");
 
 		return this;
 	}
@@ -176,6 +185,8 @@ class Stage {
 
 			system.update(delta, ...entities);
 		}
+
+		this.trigger("update");
 
 		return this;
 	}

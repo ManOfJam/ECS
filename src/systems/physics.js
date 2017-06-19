@@ -16,6 +16,8 @@ class Physics extends System {
 			if(physics.velocity.length)
 				body.translate(physics.velocity);
 		}
+
+		this.trigger("update");
 	}
 }
 

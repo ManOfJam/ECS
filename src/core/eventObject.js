@@ -1,18 +1,29 @@
 class EventObject {
 	constructor() {
-		this.events = new Map;
+		Object.defineProperty(this, "events", {value: new Map});
 	}
 
-	on(event, callback) {
-		if(typeof event !== "string" || typeof callback !== "function")
-			return;
+	listen(event, ...callbacks) {
+		if(typeof event === "string") {
+			this.events.get(event) || this.events.set(event, new Set).get(event);
 
-		(this.events.get(event) || this.events.set(event, new Set).get(event)).add(callback);
+			if(!this.events.has(event)) {
+				this.events.set(event, new Set);
+			}
+
+			const handlers = this.events.get(event);
+
+			for(const callback of callbacks) {
+				if(typeof callback === "function") {
+					handlers.add(callback);
+				}
+			}
+		}
 
 		return this;
 	}
 
-	off(event, callback) {
+	deafen(event, ...callback) {
 		if(!event) {
 			this.events.clear();
 		}
@@ -29,9 +40,9 @@ class EventObject {
 		return this;
 	}
 
-	trigger(event, ...params) {
+	trigger(event, ...args) {
 		if(this.events.has(event)) {
-			this.events.get(event).forEach(e => e.apply(this, params));
+			this.events.get(event).forEach(e => e.apply(this, args));
 		}
 
 		return this;

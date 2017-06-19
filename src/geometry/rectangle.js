@@ -2,34 +2,6 @@ const Vector = require("./vector");
 
 class Rectangle {
 	constructor(x, y, width, height) {
-		this.set(x, y, width, height)
-	}
-
-	get width() {
-		return this.size.x;
-	}
-
-	get height() {
-		return this.size.y;
-	}
-
-	get left() {
-		return this.position.x;
-	}
-
-	get right() {
-		return this.left + this.width;
-	}
-
-	get top() {
-		return this.position.y;
-	}
-
-	get bottom() {
-		return this.top + this.height;
-	}
-
-	set(x, y, width, height) {
 		if(x && typeof x === "object") {
 			if(Array.isArray(x)) {
 				if(x[0] && typeof x[0] === "object") {
@@ -68,8 +40,33 @@ class Rectangle {
 		}
 	}
 
+	get width() {
+		return this.size.x;
+	}
+
+	get height() {
+		return this.size.y;
+	}
+
+	get left() {
+		return this.position.x;
+	}
+
+	get right() {
+		return this.left + this.width;
+	}
+
+	get top() {
+		return this.position.y;
+	}
+
+	get bottom() {
+		return this.top + this.height;
+	}
+
 	overlaps(rectangle) {
 		rectangle = new Rectangle(rectangle);
+
 		return !(
 			this.left > rectangle.right ||
 			this.right < rectangle.left ||
@@ -80,6 +77,7 @@ class Rectangle {
 
 	inside(rectangle) {
 		rectangle = new Rectangle(rectangle);
+
 		return (
 			this.left >= rectangle.left &&
 			this.right <= rectangle.right &&

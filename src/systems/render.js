@@ -29,9 +29,9 @@ class Render extends System {
 			canvas = document.getElementById(canvas);
 
 		if(!(canvas instanceof HTMLCanvasElement))
-			return;
+			return null;
 
-		this.canvasId = canvas.id;
+		this.canvasId = canvas.id || (canvas.id = "ECS-canvas");
 	}
 
 	get context() {

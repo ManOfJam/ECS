@@ -1,7 +1,10 @@
+const EventObject = require("../core/eventObject");
 const toRad = require("../core/common/toRad");
 
-class Vector {
+class Vector extends EventObject {
 	constructor(x, y) {
+		super();
+
 		if(x && typeof x === "object") {
 			if(Array.isArray(x)) {
 				y = x[1];
@@ -60,7 +63,7 @@ class Vector {
 	scale(x, y) {
 		const scalar = new Vector(x, y);
 
-		this.x += scalar.x;
+		this.x *= scalar.x;
 		this.y *= scalar.y;
 
 		this.trigger("scale");

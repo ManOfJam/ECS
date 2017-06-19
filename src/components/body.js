@@ -56,6 +56,8 @@ class Body extends Component {
 		for(const vertext of this.vertices)
 			vertext.translate(translation);
 
+		this.trigger("translate");
+		
 		return this;
 	}
 
@@ -68,6 +70,8 @@ class Body extends Component {
 			vertext.rotate(deg);
 			vertext.translate(about);
 		}
+
+		this.trigger("rotate");
 
 		return this;
 	}

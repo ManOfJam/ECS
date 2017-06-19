@@ -1,7 +1,10 @@
 const Entity = require("./entity");
+const EventObject = require("./eventObject");
 
-class Scene {
+class Scene extends EventObject {
 	constructor(name) {
+		super();
+		
 		if(typeof name !== "string")
 			throw new TypeError("Scene() name argument must be of type string");
 
