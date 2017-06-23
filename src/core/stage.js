@@ -183,7 +183,7 @@ class Stage extends EventObject {
 			const entities = Array.from(this.scene.entities.values())
 				.filter(entity => entity.hasComponent(...system.required));
 
-			system.update(delta, ...entities);
+			system.update(entities, delta);
 		}
 
 		this.trigger("update");

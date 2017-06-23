@@ -5,7 +5,7 @@ class Physics extends System {
 		super("physics", "body", "physics");
 	}
 
-	update(delta, ...entities) {
+	update(entities, delta) {
 		for(const entity of entities) {
 			const body = entity.getComponent("body");
 			const physics = entity.getComponent("physics");
@@ -18,6 +18,8 @@ class Physics extends System {
 		}
 
 		this.trigger("update");
+
+		return this;
 	}
 }
 

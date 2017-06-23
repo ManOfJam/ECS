@@ -22,8 +22,6 @@ class Vector extends EventObject {
 
 		this.x = typeof x === "number" ? x : 0;
 		this.y = typeof y === "number" ? y : 0;
-
-		return this;
 	}
 
 	get length() {
@@ -51,9 +49,11 @@ class Vector extends EventObject {
 
 	rotate(deg) {
 		const rad = toRad(deg);
+		const x = this.x * Math.cos(rad) - this.y * Math.sin(rad);
+		const y = this.x * Math.sin(rad) + this.y * Math.cos(rad);
 
-		this.x *= Math.cos(rad) - this.y * Math.sin(rad);
-		this.y *= Math.cos(rad) + this.x * Math.sin(rad);
+		this.x = x;
+		this.y = y;
 
 		this.trigger("rotate");
 
@@ -63,8 +63,8 @@ class Vector extends EventObject {
 	scale(x, y) {
 		const scalar = new Vector(x, y);
 
-		this.x *= scalar.x;
-		this.y *= scalar.y;
+		this.x *= scalar.x || 1;
+		this.y *= scalar.y || 1;
 
 		this.trigger("scale");
 
