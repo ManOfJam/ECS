@@ -69,31 +69,31 @@ class Render extends System {
 
 		for(const entity of entities) {
 			const body = entity.getComponent("body");
+
+			if(!body.bounds.overlaps(this.viewport))
+				continue;
+
 			const render = entity.getComponent("render");
 			const vertices = body.vertices;
-
-			context.save();
-
-			context.translate(
-				-this.viewport.position.x,
-				-this.viewport.position.y
-			);
 			
-			context.scale(
-				this.width / this.viewport.width,
-				this.height / this.viewport.height
-			);
-
 			context.beginPath();
-			context.moveTo(vertices[0].x, vertices[0].y);
+			context.moveTo(
+				(vertices[0].x - this.viewport.position.x) * (this.width / this.viewport.width),
+				(vertices[0].y - this.viewport.position.y) * (this.height / this.viewport.height)
+			);
 
 			let i = vertices.length;
-			while(i--)
-				context.lineTo(vertices[i].x, vertices[i].y);
+			while(i--) {
+				context.lineTo(
+					(vertices[i].x - this.viewport.position.x) * (this.width / this.viewport.width),
+					(vertices[i].y - this.viewport.position.y) * (this.height / this.viewport.height)
+				);
+			}
 			
+			context.save();
 			context.fillStyle = render.fill;
 			context.strokeStyle = render.line;
-			context.lineWitdth = render.lineWidth;
+			context.lineWidth = render.lineWidth;
 			context.globalAlpha = render.opacity;
 
 			if(render.lineWidth > 0)

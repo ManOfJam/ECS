@@ -31,7 +31,7 @@ class Mouse extends System {
 		target.addEventListener("mousemove", this.mousemove.bind(this));
 		target.addEventListener("mousedown", this.mousedown.bind(this));
 		target.addEventListener("mouseup", this.mouseup.bind(this));
-		target.addEventListener("mousewheel", this.mousewheel.bind(this), {passive: true});
+		target.addEventListener("mousewheel", this.mousewheel.bind(this));
 	}
 
 	mousemove(e) {
@@ -56,6 +56,8 @@ class Mouse extends System {
 	}
 
 	mousewheel(e) {
+		e.preventDefault();
+
 		this.trigger("wheel", e);
 	}
 }
