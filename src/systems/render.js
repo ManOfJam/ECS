@@ -6,7 +6,7 @@ const toRad = require("../core/common/toRad");
 
 class Render extends System {
 	constructor(canvas, options) {
-		super("render");
+		super("render", "render", "body");
 
 		if(typeof canvas === "string")
 			canvas = document.getElementById(canvas);
@@ -17,7 +17,8 @@ class Render extends System {
 		const defaults = {
 			width: 720,
 			height: 720,
-			drawBounds: false
+			drawBounds: false,
+			fillBodies: true
 		};
 
 		const settings = extend({}, defaults, options);
@@ -28,6 +29,7 @@ class Render extends System {
 		this.height = parseFloat(settings.height) || defaults.height;
 		this.viewport = new Rectangle(0, 0, this.width, this.height);
 		this.drawBounds = !!settings.drawBounds;
+		this.fillBodies = !!settings.fillBodies;
 
 		canvas.setAttribute("width", this.width);
 		canvas.setAttribute("height", this.height);
@@ -58,18 +60,19 @@ class Render extends System {
 	update(entities, delta) {
 
 		this.context.clearRect(0, 0, this.width, this.height);
-		this.context.beginPath();
 
 		for(const entity of entities) {
 			const body = entity.getComponent("body");
 			const render = entity.getComponent("render");
 			const start = this.stageToScreen(body.vertices[0]);
 	
+			this.context.beginPath();
 			this.context.moveTo(start.x, start.y);
 
 			let i = body.vertices.length;
 			while(i--) {
 				const point = this.stageToScreen(body.vertices[i]);
+
 				this.context.lineTo(point.x, point.y);
 			}
 
@@ -79,10 +82,12 @@ class Render extends System {
 			this.context.lineWidth = render.lineWidth;
 			this.context.globalAlpha = render.opacity;
 
-			if(render.lineWidth > 0)
+			if(render.lineWidth > 0 || !this.fillBodies)
 				this.context.stroke();
 
-			this.context.closePath();
+			if(this.fillBodies)
+				this.context.fill();
+
 			this.context.restore();
 
 			if(this.drawBounds) {
@@ -93,7 +98,6 @@ class Render extends System {
 			}
 		}
 
-		this.context.fill();
 		this.trigger("update");
 
 		return this;
