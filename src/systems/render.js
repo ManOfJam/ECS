@@ -1,117 +1,99 @@
 const Rectangle = require("../geometry/rectangle");
 const System = require("../core/system");
+const Vector = require("../geometry/vector");
 const extend = require("../core/common/extend");
 const toRad = require("../core/common/toRad");
 
 class Render extends System {
 	constructor(canvas, options) {
-		super("render", "render", "body");
+		super("render");
 
-		this.canvas = canvas;
+		if(typeof canvas === "string")
+			canvas = document.getElementById(canvas);
 
-		if(!this.canvas)
+		if(!canvas || canvas.tagName !== "CANVAS")
 			return null;
 
-		const settings = {
+		const defaults = {
 			width: 720,
 			height: 720,
 			drawBounds: false
 		};
 
-		extend(this, settings, options);
+		const settings = extend({}, defaults, options);
 
+		this.canvas = canvas;
+		this.context = canvas.getContext("2d");
+		this.width = parseFloat(settings.width) || defaults.width;
+		this.height = parseFloat(settings.height) || defaults.height;
 		this.viewport = new Rectangle(0, 0, this.width, this.height);
+		this.drawBounds = !!settings.drawBounds;
+
+		canvas.setAttribute("width", this.width);
+		canvas.setAttribute("height", this.height);
 	}
 
-	get canvas() {
-		return document.getElementById(this.canvasId);
+	get ratio() {
+		return this.height / this.viewport.height;
 	}
 
-	set canvas(canvas) {
-		if(typeof canvas === "string")
-			canvas = document.getElementById(canvas);
+	screenToStage(...point) {
+		point = new Vector(...point);
 
-		if(!(canvas instanceof HTMLCanvasElement))
-			return null;
+		point.x = point.x / this.ratio + this.viewport.position.x;
+		point.y = point.y / this.ratio + this.viewport.position.y;
 
-		this.canvasId = canvas.id || (canvas.id = "ECS-canvas");
+		return point;
 	}
 
-	get context() {
-		return this.canvas ? this.canvas.getContext("2d") : null;
-	}
+	stageToScreen(...point) {
+		point = new Vector(...point);
 
-	get height() {
-		return Number(this.canvas.getAttribute("height"));
-	}
+		point.x = (point.x - this.viewport.position.x) * this.ratio;
+		point.y = (point.y - this.viewport.position.y) * this.ratio;
 
-	set height(height) {
-		height = parseInt(height);
-
-		if(!isNaN(height))
-			this.canvas.setAttribute("height", Math.max(0, height));
-	}
-
-	get width() {
-		return Number(this.canvas.getAttribute("width"));
-	}
-
-	set width(width) {
-		width = parseInt(width);
-
-		if(!isNaN(width))
-			this.canvas.setAttribute("width", Math.max(0, width));
+		return point;
 	}
 
 	update(entities, delta) {
-		const context = this.context;
-		context.clearRect(0, 0, this.width, this.height);
+
+		this.context.clearRect(0, 0, this.width, this.height);
+		this.context.beginPath();
 
 		for(const entity of entities) {
 			const body = entity.getComponent("body");
-
-			if(!body.bounds.overlaps(this.viewport))
-				continue;
-
 			const render = entity.getComponent("render");
-			const vertices = body.vertices;
-			
-			context.beginPath();
-			context.moveTo(
-				(vertices[0].x - this.viewport.position.x) * (this.width / this.viewport.width),
-				(vertices[0].y - this.viewport.position.y) * (this.height / this.viewport.height)
-			);
+			const start = this.stageToScreen(body.vertices[0]);
+	
+			this.context.moveTo(start.x, start.y);
 
-			let i = vertices.length;
+			let i = body.vertices.length;
 			while(i--) {
-				context.lineTo(
-					(vertices[i].x - this.viewport.position.x) * (this.width / this.viewport.width),
-					(vertices[i].y - this.viewport.position.y) * (this.height / this.viewport.height)
-				);
+				const point = this.stageToScreen(body.vertices[i]);
+				this.context.lineTo(point.x, point.y);
 			}
-			
-			context.save();
-			context.fillStyle = render.fill;
-			context.strokeStyle = render.line;
-			context.lineWidth = render.lineWidth;
-			context.globalAlpha = render.opacity;
+
+			this.context.save();
+			this.context.fillStyle = render.fill;
+			this.context.strokeStyle = render.line;
+			this.context.lineWidth = render.lineWidth;
+			this.context.globalAlpha = render.opacity;
 
 			if(render.lineWidth > 0)
-				context.stroke();
+				this.context.stroke();
 
-			context.fill();
-			context.restore();
+			this.context.closePath();
+			this.context.restore();
 
 			if(this.drawBounds) {
-				context.strokeRect(
-					body.bounds.position.x,
-					body.bounds.position.y,
-					body.bounds.size.x,
-					body.bounds.size.y
-				);
+				const position = this.stageToScreen(body.bounds.position);
+				const size = this.stageToScreen(body.bounds.size);
+
+				this.context.strokeRect(position.x, position.y, size.x, size.y);
 			}
 		}
 
+		this.context.fill();
 		this.trigger("update");
 
 		return this;

@@ -1,9 +1,7 @@
-const EventObject = require("../core/eventObject");
 const toRad = require("../core/common/toRad");
 
-class Vector extends EventObject {
+class Vector {
 	constructor(x, y) {
-		super();
 
 		if(x && typeof x === "object") {
 			if(Array.isArray(x)) {
@@ -42,8 +40,6 @@ class Vector extends EventObject {
 		this.x += translation.x;
 		this.y += translation.y;
 
-		this.trigger("translate");
-
 		return this;
 	}
 
@@ -55,8 +51,6 @@ class Vector extends EventObject {
 		this.x = x;
 		this.y = y;
 
-		this.trigger("rotate");
-
 		return this;
 	}
 
@@ -65,8 +59,6 @@ class Vector extends EventObject {
 
 		this.x *= scalar.x || 1;
 		this.y *= scalar.y || 1;
-
-		this.trigger("scale");
 
 		return this;
 	}
