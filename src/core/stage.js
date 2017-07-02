@@ -14,19 +14,19 @@ class Stage extends EventObject {
 			width: 720
 		};
 
-		const settings = extend(defaults, options);
+		const settings = extend({}, defaults, options);
 
 		Object.defineProperties(this, {
-			active: {writable: true},
-			frameId: {writable: true},
-			interval: {value: Math.max(1, (parseInt(settings.interval) || 1))},
+			active: {value: false, writable: true},
+			frameId: {value: null, writable: true},
+			interval: {value: Math.max(0, Number(settings.interval)) || 1},
 			scene:{writable: true},
 			scenes: {value: new Map},
 			systems: {value: new Map},
 		});
 
-		this.width = parseInt(settings.width) || defaults.width;
-		this.height = parseInt(settings.height) || defaults.height;
+		this.width = Math.max(0, Number(settings.width)) || defaults.width;
+		this.height = Math.max(0, Number(settings.height)) || defaults.height;
 		this.addScene(new Scene("index"));
 		this.enterScene("index");
 

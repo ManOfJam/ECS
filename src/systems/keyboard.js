@@ -12,12 +12,12 @@ class Keyboard extends System {
 
 	keydown(e) {
 		this.keys.add(e.code);
-		this.trigger("keydown");
+		this.trigger("keydown", e);
 	}
 
 	keyup(e) {
 		this.keys.delete(e.code);
-		this.trigger("keydown");
+		this.trigger("keydown", e);
 	}
 }
 

@@ -12,7 +12,7 @@ class Render extends System {
 			canvas = document.getElementById(canvas);
 
 		if(!canvas || canvas.tagName !== "CANVAS")
-			return null;
+			throw new TypeError("")
 
 		const defaults = {
 			width: 720,

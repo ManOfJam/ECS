@@ -5,7 +5,7 @@ const random = require("./common/random");
 class Entity extends EventObject {
 	constructor() {
 		super();
-		
+
 		Object.defineProperties(this, {
 			components: {value: new Map},
 			id: {value: "#" + random.float().toString(16).substring(2, 8)}

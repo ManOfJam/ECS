@@ -14,12 +14,12 @@ class Vector {
 			}
 		}
 
-		if(typeof y !== "number") {
+		if(isNan(Number(y))) {
 			y = x;
 		}
 
-		this.x = typeof x === "number" ? x : 0;
-		this.y = typeof y === "number" ? y : 0;
+		this.x = Number(x) || 0;
+		this.y = Number(y) || 0;
 	}
 
 	get length() {

@@ -66,10 +66,14 @@ class Rectangle {
 
 	translate(x, y) {
 		this.position.translate(x, y);
+
+		return this;
 	}
 
 	scale(x, y) {
 		this.size.scale(x, y);
+
+		return this;
 	}
 
 	overlaps(rectangle) {

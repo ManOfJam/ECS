@@ -6,14 +6,13 @@ class Physics extends Component {
 	constructor(options) {
 		super("physics");
 
-		const settings = {
-			angularVelocity: 0,
-			velocity: new Vector
+		const defaults = {
+			angularVelocity: 0
 		};
 
-		extend(settings, options);
+		const settings = extend({}, settings, options);
 
-		this.angularVelocity = typeof settings.angularVelocity === "number" ? settings.angularVelocity : 0;
+		this.angularVelocity = Number(settings.angularVelocity) || defaults.angularVelocity;
 		this.velocity = new Vector(settings.velocity);
 	}
 }
