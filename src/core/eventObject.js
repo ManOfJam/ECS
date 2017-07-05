@@ -1,3 +1,7 @@
+/**
+ *	
+ */
+
 class EventObject {
 	constructor() {
 		Object.defineProperty(this, "events", {value: new Map});
@@ -5,17 +9,35 @@ class EventObject {
 
 	listen(event, ...callbacks) {
 		if(typeof event === "string") {
-			this.events.get(event) || this.events.set(event, new Set).get(event);
 
-			if(!this.events.has(event)) {
-				this.events.set(event, new Set);
+			callbacks = callbacks.filter(callback => typeof callback === "function")
+
+			if(callbacks.length) {
+				if(!this.events.has(event)) {
+					this.events.set(event, new Set);
+				}
+
+				const handlers = this.events.get(event);
+				callbacks.forEach(callback => handlers.add(callback));
 			}
+		}
 
-			const handlers = this.events.get(event);
+		return this;
+	}
 
-			for(const callback of callbacks) {
-				if(typeof callback === "function") {
-					handlers.add(callback);
+	deafen(event, ...callbacks) {
+		if(!event) {
+			this.events.clear();
+		}
+		else if(this.events.has(event)) {
+			if(!callback.length) {
+				this.events.delete(event);
+			}
+			else {
+				const handlers = this.events.get(event);
+
+				for(const callback of callbacks) {
+					handlers.delete(callback);
 				}
 			}
 		}
@@ -23,26 +45,11 @@ class EventObject {
 		return this;
 	}
 
-	deafen(event, ...callback) {
-		if(!event) {
-			this.events.clear();
-		}
-
-		if(this.events.has(event)) {
-			if(!callback) {
-				this.events.delete(event);
-			}
-			else {
-				this.events.get(event).delete(callback);
-			}
-		}
-
-		return this;
-	}
-
 	trigger(event, ...args) {
-		if(this.events.has(event)) {
-			this.events.get(event).forEach(e => e.apply(this, args));
+		const handlers = this.events.get(event);
+
+		if(handlers) {
+			handlers.forEach(e => e.apply(this, args));
 		}
 
 		return this;

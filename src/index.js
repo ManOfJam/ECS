@@ -1,6 +1,7 @@
 window.engine = {
 	Component: require("./core/component"),
 	Entity: require("./core/entity"),
+	EventObject: require("./core/eventObject"),
 	Scene: require("./core/scene"),
 	Stage: require("./core/stage"),
 	System: require("./core/system"),

@@ -3,7 +3,16 @@ const Scene = require("./scene");
 const System = require("./system");
 const extend = require("./common/extend");
 
+/**
+ *	
+ */
+
 class Stage extends EventObject {
+
+	/**
+	 *
+	 */
+	 
 	constructor(options) {
 		super();
 		
