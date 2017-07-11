@@ -1,23 +1,23 @@
 const EventObject = require("./eventObject");
 
 /**
- *	Objects intended for updating particular components within entities. When attached to a stage, if the instance has a method
- *	named "update", it will be called during {@link stage}.[update]{@link stage#update}.
+ * Objects intended for updating particular components within entities. When attached to a stage, if the instance has a method
+ * named "update", it will be called during {@link stage}.[update]{@link stage#update}.
  *
- *	@extends EventObject
+ * @extends EventObject
  */
 
 class System extends EventObject {
 
 	/**
-	 *	Creates a new System.
+	 * Creates a new System.
 	 *
-	 *	@param {string} name - A string used to identify the system. This is used as the key inside a stages systems map, and
-	 *	therefore the parameter in it's [removeSystem]{@link stage#removeSystem}, [hasSystem]{@link stage#hasSystem}, and
-	 *	[getSystem]{@link stage#getSystem} methods.
+	 * @param {string} name - A string used to identify the system. This is used as the key inside a stages systems map, and
+	 * therefore the parameter in it's [removeSystem]{@link stage#removeSystem}, [hasSystem]{@link stage#hasSystem}, and
+	 * [getSystem]{@link stage#getSystem} methods.
 	 *
-	 *	@param {...string} required - The names of the component types that this system updates, an entity must poses all
-	 *	required components in order for any one component to be updated.
+	 * @param {...string} required - The names of the component types that this system updates, an entity must poses all
+	 * required components in order for any one component to be updated.
 	 */
 
 	constructor(name, ...required) {

@@ -2,20 +2,20 @@ const Entity = require("./entity");
 const EventObject = require("./eventObject");
 
 /**
- *	Containers of entities; help distinguish between different sections of the program. Systems only update the entities within
- *	the current scene. Scenes are controlled by the {@link stage}.
+ * Containers of entities; help distinguish between different sections of the program. Systems only update the entities within
+ * the current scene. Scenes are controlled by the {@link stage}.
  * 
- *	@extends EventObject
+ * @extends EventObject
  */
 
 class Scene extends EventObject {
 
 	/**
-	 *	Creates a new Scene.
+	 * Creates a new Scene.
 	 *
-	 *	@param {string} name - A string used to identify the scene. This is used as the key inside the [stage's]{@link stage}
-	 *	scenes map, and therefore the parameter in it's [removeScene]{@link stage#removeScene},
-	 *	[hasScene]{@link stage#hasScene}, and [getScene]{@link stage#getScene} methods.
+	 * @param {string} name - A string used to identify the scene. This is used as the key inside the [stage's]{@link stage}
+	 * scenes map, and therefore the parameter in it's [removeScene]{@link stage#removeScene},
+	 * [hasScene]{@link stage#hasScene}, and [getScene]{@link stage#getScene} methods.
 	 */
 
 	constructor(name) {
@@ -31,11 +31,11 @@ class Scene extends EventObject {
 	}
 
 	/**
-	 *	Adds the given {@link entity} to the scene. If an entity with the same id is already in the scene, that entity will be
-	 *	replaced.
+	 * Adds the given {@link Entity} to the Scene. If an Entity with the same id has already been added, that Entity will be
+	 * replaced.
 	 *
-	 *	@param {...Entity} entity - An instance of an Entity
-	 *	@return {this}
+	 * @param {...Entity} entity - An instance of an Entity.
+	 * @return {this}
 	 */
 
 	addEntity(...entities) {
@@ -49,12 +49,10 @@ class Scene extends EventObject {
 	}
 
 	/**
-	 *	Removes the [entity]{@link entity} with the given id or matching the id of a given entity, from the scene. Unlike
-	 *	systems, components, and scenes, entities posses an ID, which is unique to each instance, so if the user is
-	 *	passing an entity, then it is that exact instance that will be removed.
-	 *	
-	 *	@param {...(Entity|string)} entity - The id of, or the instance of, the entity to remove.
-	 *	@return {this}
+	 * Removes the {@link Entity} with the given id, or the id of a given Entity, from the Scene.
+	 *
+	 * @param {...(Entity|string)} entity - The id of, or an Entity with the id of, the Entity to remove.
+	 * @return {this}
 	 */
 
 	removeEntity(...entities) {
@@ -68,10 +66,10 @@ class Scene extends EventObject {
 	}
 
 	/**
-	 *	Returns whether or not the scene has the given {@link entity}, or an entity matching the id of a given entity.
+	 * Returns whether or not the Scene has an {@link Entity} with the given id, or the id of a given Entity.
 	 *
-	 *	@param {...(Entity|string)} entity - The id of, or an entity with the id of, the entity to check.
-	 *	@return {Boolean}
+	 * @param {...(Entity|string)} entity - The id of, or an Entity with the id of, the Entity to check.
+	 * @return {Boolean}
 	 */
 
 	hasEntity(...entities) {
@@ -87,10 +85,10 @@ class Scene extends EventObject {
 	}
 
 	/**
-	 *	Returns the {@link entity} found with the given id, or matching the id of a given entity.
+	 * Returns the {@link Component} found with the given id, or the id of a given Entity, in the Scene.
 	 *
-	 *	@param {(Entity|string)} entity - The id of, or an entity with the id of, the entity to return.
-	 *	@return {(Entity|undefined)} undefined if the entity can't be found.
+	 * @param {(Entity|string)} entity - The id of, or an Entity with the id of, the Entity to return.
+	 * @return {(Entity|undefined)} undefined if the Entity can't be found.
 	 */
 
 	getEntity(entity) {

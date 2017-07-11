@@ -18,7 +18,10 @@ class EventObject {
 				}
 
 				const handlers = this.events.get(event);
-				callbacks.forEach(callback => handlers.add(callback));
+
+				for(const callback of callbacks) {
+					handlers.add(callback.bind(this));
+				}
 			}
 		}
 
@@ -49,7 +52,9 @@ class EventObject {
 		const handlers = this.events.get(event);
 
 		if(handlers) {
-			handlers.forEach(e => e.apply(this, args));
+			for(const callback of handlers) {
+				callback(...args);
+			}
 		}
 
 		return this;
