@@ -2,24 +2,23 @@ const toRad = require("../core/common/toRad");
 
 class Vector {
 	constructor(x, y) {
-
 		if(x && typeof x === "object") {
 			if(Array.isArray(x)) {
 				y = x[1];
 				x = x[0];
 			}
-			else if(x) {
+			else {
 				y = x.y;
 				x = x.x;
 			}
 		}
 
-		if(isNan(Number(y))) {
+		if(y === undefined) {
 			y = x;
 		}
 
-		this.x = Number(x) || 0;
-		this.y = Number(y) || 0;
+		this.x = typeof x === "number" ? x : 0;
+		this.y = typeof y === "number" ? y : 0;
 	}
 
 	get length() {

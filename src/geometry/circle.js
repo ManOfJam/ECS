@@ -4,10 +4,10 @@ class Circle {
 	constructor(x, y, r) {
 		if(x && typeof x === "object") {
 			this.center = new Vector(x.center || x);
-			r = "radius" in x ? x.radius : y;
+			r = x.radius || y;
 		}
 
-		this.radius = parseFloat(r) || 0;
+		this.radius = typeof r === "number" ? r : 0;
 	}
 
 	overlaps(circle) {

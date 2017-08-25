@@ -4,17 +4,9 @@ class Rectangle {
 	constructor(x, y, width, height) {
 		if(x && typeof x === "object") {
 			if(Array.isArray(x)) {
-				if(x[0] && typeof x[0] === "object") {
+				if((x[0] && typeof x[0] === "object") || (x[1] && typeof x[1] === "object")) {
 					this.position = new Vector(x[0]);
 					this.size = new Vector(x[1], x[2]);
-				}
-				else if(x[1] && typeof x[1] === "object") {
-					this.position = new Vector(x[0]);
-					this.size = new Vector(x[1]);
-				}
-				else if(x[2] && typeof x[2] === "object") {
-					this.position = new Vector(x[0], x[1]);
-					this.size = new Vector(x[2]);
 				}
 				else {
 					this.position = new Vector(x[0], x[1]);
@@ -28,11 +20,7 @@ class Rectangle {
 		}
 		else if(y && typeof y === "object") {
 			this.position = new Vector(x);
-			this.size = new Vector(y);
-		}
-		else if(width && typeof width === "object") {
-			this.position = new Vector(x, y);
-			this.size = new Vector(width);
+			this.size = new Vector(y, width);
 		}
 		else {
 			this.position = new Vector(x, y);
