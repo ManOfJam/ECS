@@ -1,6 +1,9 @@
 function toDeg(rad) {
-	rad = Number(rad % 360) || 0;
-	return rad * 180 / Math.PI;
+	if(typeof rad !== "number") {
+		return NaN;
+	}
+
+	return (rad % 360) * 180 / Math.PI;
 }
 
 module.exports = toDeg;

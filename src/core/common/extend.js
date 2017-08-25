@@ -1,3 +1,5 @@
+const from = require("./from");
+
 function extend(target, ...sources) {
 	for(const source of sources) {
 		for(const key in source) {
@@ -6,7 +8,7 @@ function extend(target, ...sources) {
 					extend(target[key], source[key]);
 				}
 				else {
-					target[key] = extend({}, source[key])
+					target[key] = from(source[key]);
 				}
 			}
 			else {
