@@ -2,7 +2,7 @@ const System = require("../core/system");
 
 class Physics extends System {
 	constructor() {
-		super("physics", "body", "physics");
+		super("physics", ["body", "physics"]);
 	}
 
 	update(entities, delta) {

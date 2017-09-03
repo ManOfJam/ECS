@@ -6,7 +6,7 @@ const toRad = require("../core/common/toRad");
 
 class Render extends System {
 	constructor(canvas, options) {
-		super("render", "render", "body");
+		super("render", ["render", "body"]);
 
 		if(typeof canvas === "string")
 			canvas = document.getElementById(canvas);
