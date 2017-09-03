@@ -6,7 +6,10 @@ const webserver = require("gulp-webserver");
 
 gulp.task("build", () => {
 	browserify("src")
-		.bundle()
+		.bundle().on("error", function(err) {
+			console.log(err);
+			this.emit("end");
+		})
 		.pipe(stream("build.js"))
 		.pipe(gulp.dest("dist"));
 });
