@@ -1,5 +1,5 @@
-const EventTarget = require("../core/eventTarget");
-const Vector = require("../geometry/vector");
+const EventObject = require("./core/eventObject");
+const Vector = require("./geometry/vector");
 
 class Mouse extends EventTarget {
 	constructor(target) {

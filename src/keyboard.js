@@ -1,6 +1,6 @@
-const EventTarget = require("../core/eventTarget");
+const EventObject = require("./core/eventObject");
 
-class Keyboard extends EventTarget {
+class Keyboard extends EventObject {
 	constructor() {
 		super();
 
