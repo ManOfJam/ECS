@@ -1,5 +1,4 @@
 const EventObject = require("./eventObject");
-const extend = ("./common/extend");
 
 /**
  * Parent class for all components.

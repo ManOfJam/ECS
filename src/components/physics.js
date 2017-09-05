@@ -1,6 +1,6 @@
 const Component = require("../core/component");
 const Vector = require("../geometry/vector");
-const extend = require("../core/common/extend");
+const from = require("../core/common/from");
 
 class Physics extends Component {
 	constructor(options) {
@@ -10,7 +10,7 @@ class Physics extends Component {
 			angularVelocity: 0
 		};
 
-		const settings = extend({}, settings, options);
+		const settings = from(defaults, options);
 
 		this.angularVelocity = Number(settings.angularVelocity) || defaults.angularVelocity;
 		this.velocity = new Vector(settings.velocity);
