@@ -1,8 +1,8 @@
-const System = require("../core/system");
+const EventTarget = require("../core/eventTarget");
 
-class Keyboard extends System {
+class Keyboard extends EventTarget {
 	constructor() {
-		super("keyboard");
+		super();
 
 		Object.defineProperty(this, "keys", {value: new Set});
 

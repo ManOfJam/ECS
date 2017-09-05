@@ -1,9 +1,9 @@
-const System = require("../core/system");
-const Vector = require("../geometry/vector")
+const EventTarget = require("../core/eventTarget");
+const Vector = require("../geometry/vector");
 
-class Mouse extends System {
+class Mouse extends EventTarget {
 	constructor(target) {
-		super("mouse");
+		super();
 
 		this.target = target;
 
