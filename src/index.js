@@ -1,4 +1,4 @@
-window.engine = {
+window.ECS = {
 	Component: require("./core/component"),
 	Entity: require("./core/entity"),
 	EventObject: require("./core/eventObject"),

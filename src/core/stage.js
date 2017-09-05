@@ -1,7 +1,7 @@
 const EventObject = require("./eventObject");
 const Scene = require("./scene");
 const System = require("./system");
-const extend = require("./common/extend");
+const from = require("./common/from");
 
 /**
  *	
@@ -25,7 +25,7 @@ class Stage extends EventObject {
 			width: 720
 		};
 
-		const settings = extend({}, defaults, options);
+		const settings = from(defaults, options);
 
 		Object.defineProperties(this, {
 			active: {value: false, writable: true},
