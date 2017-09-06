@@ -20,9 +20,7 @@ class Stage extends EventObject {
 		
 		const defaults = {
 			autorun: false,
-			interval: 1,
-			height: 720,
-			width: 720
+			interval: 1
 		};
 
 		const settings = from(defaults, options);
@@ -36,8 +34,6 @@ class Stage extends EventObject {
 			systems: {value: new Map},
 		});
 
-		this.width = Math.max(0, Number(settings.width)) || defaults.width;
-		this.height = Math.max(0, Number(settings.height)) || defaults.height;
 		this.addScene(new Scene("index"));
 		this.enterScene("index");
 
@@ -291,13 +287,12 @@ class Stage extends EventObject {
 
 	update(delta) {
 		for(const [name, system] of this.systems) {
-			if(typeof system.update !== "function")
-				continue;
+			if(typeof system.update === "function") {
+				const entities = Array.from(this.scene.entities.values())
+				const hasRequired = entities.filter(entity => entity.hasComponent(...system.required));
 
-			const entities = Array.from(this.scene.entities.values())
-				.filter(entity => entity.hasComponent(...system.required));
-
-			system.update(entities, delta);
+				system.update(hasRequired, delta);
+			}
 		}
 
 		this.trigger("update");

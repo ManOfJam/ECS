@@ -13,6 +13,11 @@ class Render extends Component {
 		};
 		
 		const settings = from(defaults, options);
+
+		this.fill = settings.fill;
+		this.line = settings.line;
+		this.lineWidth = settings.lineWidth;
+		this.opacity = settings.opacity;
 	}
 }
 

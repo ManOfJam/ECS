@@ -8,6 +8,14 @@ class Render extends System {
 	constructor(canvas, options) {
 		super("render", ["render", "body"]);
 
+		if(typeof canvas === "string") {
+			canvas = document.getElementById(canvas);
+		}
+
+		if(!(canvas instanceof HTMLCanvasElement)) {
+			throw new TypeError("Render() \"canvas\" argument must be instance of, or ID of, an \"HTMLCanvasElement\".");
+		}
+
 		const defaults = {
 			width: 720,
 			height: 720,
@@ -17,28 +25,16 @@ class Render extends System {
 
 		const settings = from(defaults, options);
 
-		this.canvas = Render.parseCanvas(canvas) || document.createElement("canvas");
-		this.context = this.canvas.getContext("2d");
+		this.canvas = canvas;
+		this.context = canvas.getContext("2d");
 		this.width = typeof settings.width === "number" && settings.width >= 0 ? settings.width : defaults.width;
 		this.height = typeof settings.height === "number" && settings.height >= 0 ? settings.height : defaults.height;
 		this.viewport = new Rectangle(0, 0, this.width, this.height);
 		this.drawBounds = typeof settings.drawBounds === "boolean" ? settings.drawBounds : defaults.drawBounds;
 		this.fillBodies = typeof settings.fillBodies === "boolean" ? settings.fillBodies : defaults.fillBodies;
-
+		
 		canvas.setAttribute("width", this.width);
 		canvas.setAttribute("height", this.height);
-	}
-
-	static parseCanvas(canvas) {
-		if(typeof canvas === "string") {
-			canvas = document.getElementById(canvas);
-		}
-
-		if(!canvas || canvas.tagName !== "CANVAS") {
-			return null;
-		}
-
-		return canvas;
 	}
 
 	get ratio() {

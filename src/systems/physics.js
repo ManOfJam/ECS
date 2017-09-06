@@ -10,8 +10,8 @@ class Physics extends System {
 			const body = entity.getComponent("body");
 			const physics = entity.getComponent("physics");
 
-			if(physics.angularVelocity)
-				body.rotate(physics.angularVelocity);
+			if(physics.angularVelocity);
+				body.rotate(physics.angularVelocity, body.center);
 
 			if(physics.velocity.length)
 				body.translate(physics.velocity);
