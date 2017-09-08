@@ -6,18 +6,15 @@ class Keyboard extends EventObject {
 
 		Object.defineProperty(this, "keys", {value: new Set});
 
-		window.addEventListener("keydown", this.keydown.bind(this));
-		window.addEventListener("keyup", this.keyup.bind(this));
-	}
+		window.addEventListener("keydown", e => {
+			this.keys.add(e.code);
+			this.trigger("keydown", e);
+		});
 
-	keydown(e) {
-		this.keys.add(e.code);
-		this.trigger("keydown", e);
-	}
-
-	keyup(e) {
-		this.keys.delete(e.code);
-		this.trigger("keydown", e);
+		window.addEventListener("keyup", e => {
+			this.keys.delete(e.code);
+			this.trigger("keydown", e);
+		});
 	}
 }
 

@@ -1,64 +1,51 @@
 const EventObject = require("./core/eventObject");
 const Vector = require("./geometry/vector");
 
-class Mouse extends EventTarget {
+class Mouse extends EventObject {
 	constructor(target) {
 		super();
 
-		this.target = target;
-
-		if(!this.target)
-			return null;
-
-		this.buttons = new Set;
-		this.position = new Vector;
-		this.click = new Vector;
-	}
-
-	get target() {
-		return document.getElementById(this.targetId);
-	}
-
-	set target(target) {
-		if(typeof target === "string")
+		if(typeof target === "string") {
 			target = document.getElementById(target);
+		}
 
-		if(!(target instanceof EventTarget))
-			return null;
+		if(!(target instanceof EventTarget)) {
+			throw new TypeError("Mouse() \"target\" argument must be instance of, or ID of, an \"EventTarget\".");
+		}
 
-		this.targetId = target.id || (target.id = "ECS-target");
+		Object.defineProperties(this, {
+			target: {value: target},
+			buttons: {value: new Set},
+			position: {value: new Vector},
+			click: {value: Vector}
+		});
 
-		target.addEventListener("mousemove", this.mousemove.bind(this));
-		target.addEventListener("mousedown", this.mousedown.bind(this));
-		target.addEventListener("mouseup", this.mouseup.bind(this));
-		target.addEventListener("mousewheel", this.mousewheel.bind(this));
-	}
+		target.addEventListener("mousemove", e => {
+			this.position.x = e.offsetX;
+			this.position.y = e.offsetY;
 
-	mousemove(e) {
-		this.position.x = e.offsetX;
-		this.position.y = e.offsetY;
+			this.trigger("move", e);
+		});
 
-		this.trigger("mousemove", e);
-	}
+		target.addEventListener("mousedown", e => {
+			this.click.x = e.offsetX;
+			this.click.y = e.offsetY;
+			this.buttons.add(e.button);
 
-	mousedown(e) {
-		this.click.x = e.offsetX;
-		this.click.y = e.offsetY;
-		this.buttons.add(e.button);
+			this.trigger("down", e);
+		});
 
-		this.trigger("mousedown", e);
-	}
+		target.addEventListener("mouseup", e => {
+			this.buttons.delete(e.button);
 
-	mouseup(e) {
-		this.buttons.delete(e.button);
+			this.trigger("up", e);
+		});
 
-		this.trigger("mouseup", e);
-	}
+		target.addEventListener("mousewheel", e => {
+			e.preventDefault();
 
-	mousewheel(e) {
-		e.preventDefault();
-
-		this.trigger("wheel", e);
+			this.trigger("wheel", e);
+		});
 	}
 }
 

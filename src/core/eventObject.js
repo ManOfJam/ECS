@@ -33,7 +33,7 @@ class EventObject {
 			this.events.clear();
 		}
 		else if(this.events.has(event)) {
-			if(!callback.length) {
+			if(!callbacks.length) {
 				this.events.delete(event);
 			}
 			else {

@@ -205,6 +205,8 @@ class Stage extends EventObject {
 	 *
 	 * @param {...(Entity|string)} entity - The id of, or an Entity with the id of, the Entity to remove.
 	 * @return {this}
+	 *
+	 * @todo remove the entity from all scenes.
 	 */
 
 	removeEntity(...entities) {
@@ -218,6 +220,8 @@ class Stage extends EventObject {
 	 *
 	 * @param {...(Entity|string)} entity - The id of, or an Entity with the id of, the Entity to check.
 	 * @return {Boolean}
+	 *
+	 * @todo Search all scenes.
 	 */
 
 	hasEntity(...entities) {
@@ -231,6 +235,8 @@ class Stage extends EventObject {
 	 *
 	 * @param {(Entity|string)} entity - The id of, or an Entity with the id of, the Entity to return.
 	 * @return {(Entity|undefined)} undefined if the Entity can't be found.
+	 *
+	 * @todo Return the entity from any scene.
 	 */
 
 	getEntity(entity) {
