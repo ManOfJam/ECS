@@ -6,6 +6,11 @@ class Physics extends System {
 	}
 
 	update(entities, delta) {
+
+		if(!(Array.isArray(entities))) {
+			entities = [entities];
+		}
+
 		for(const entity of entities) {
 			const body = entity.getComponent("body");
 			const physics = entity.getComponent("physics");

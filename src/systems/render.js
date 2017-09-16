@@ -100,6 +100,10 @@ class Render extends System {
 
 	update(entities, delta) {
 
+		if(!(Array.isArray(entities))) {
+			entities = [entities];
+		}
+
 		this.context.clearRect(0, 0, this.width, this.height);
 
 		for(const entity of entities) {
