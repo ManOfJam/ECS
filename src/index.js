@@ -1,4 +1,4 @@
-window.ECS = {
+window.ECS = module.exports = {
 	Component: require("./core/component"),
 	Entity: require("./core/entity"),
 	EventObject: require("./core/eventObject"),
